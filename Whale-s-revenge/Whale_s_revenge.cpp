@@ -15,17 +15,20 @@ int PosY = 0;
 Player player;
 Shark sharks;
 
+bool createShark = false;
+
 void main(){
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
     window.setFramerateLimit(60);
 
-    RectangleShape Shark(Vector2f(200, 75));
-    Shark.setFillColor(Color::Red);
-    Shark.setPosition(1800, 800);
+    RectangleShape Test(Vector2f(400, 200));
+    Test.setFillColor(Color::Magenta);
+    Test.setPosition(1500, 300);
 
     Clock clock;
+    Clock TimerTest;
 
     while (window.isOpen())
     {
@@ -45,7 +48,10 @@ void main(){
         }
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
-            sharks.CreateShark();
+            if (!createShark) {
+                sharks.CreateShark(5, 9);
+                createShark = true;
+            }
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -53,17 +59,6 @@ void main(){
         }
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
             player.ProjectileSpeed -= 0.05f;
-        }
-
-        if (!player.bulles.empty()) {
-            if (player.bulles.back().getGlobalBounds().intersects(Shark.getGlobalBounds())) {
-                player.DeleteBulles();
-                BulleIndex += 1;
-                if (BulleIndex == 4) {
-                    Shark.setPosition(4000, 4000);
-                    BulleIndex = 0;
-                }
-            }
         }
 
         if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > player.ProjectileSpeed) {
@@ -84,25 +79,16 @@ void main(){
                 window.close();
         }
 
-        Vector2f playerPos = player.PlayerSprite.getPosition();
-        Vector2f enemyPos = Shark.getPosition();
-        Vector2f direction = playerPos - enemyPos;
-       
-        float length = sqrt(direction.x * direction.x + direction.y * direction.y);
-        if (length != 0) {
-            direction /= length;
-        }
-
         window.clear();
-        window.draw(Shark);
+#pragma region Requins
+        sharks.draw(window);
 
-        for(const auto&)
-
-        if (Shark.getPosition().x - player.PlayerSprite.getPosition().x > 500 || Shark.getPosition().y - player.PlayerSprite.getPosition().y > 500) {
-            Shark.move(direction * player.Speed);
+        if (sharks.SharkCreated) {
+            window.draw(Test);
+            Test.move(-5, 0);
+            sharks.moveAll();
         }
-        
-
+#pragma endregion Requins
         window.draw(player.PlayerSprite);
         for (int i = 0; i < player.bulles.size(); i++) {
             window.draw(player.bulles[i]);

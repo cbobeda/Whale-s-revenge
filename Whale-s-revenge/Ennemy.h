@@ -8,6 +8,11 @@ public:
 
 	int Life;
 	float Speed;
+	bool SharkCreated = false;
 
-	void CreateShark();
+	void CreateShark(int MeleeSharks, int DistanceSharks);
+
+	void draw(sf::RenderWindow& window);
+
+	void moveAll();
 };

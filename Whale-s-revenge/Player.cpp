@@ -26,7 +26,6 @@ void Player::CreateBulles() {
 	bulles.back().setFillColor(Color::Blue);
 	bulles.back().setPosition(PlayerSprite.getPosition());
 	timers.push_back(Clock());
-	
 }
 
 void Player::DeleteBulles() {

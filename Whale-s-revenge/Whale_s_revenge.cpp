@@ -11,12 +11,26 @@ Shark sharks;
 
 bool createShark = false;
 
-
+Texture backgroundTexture;
+Texture waveTexture;
 using namespace sf;
 using namespace std;
 bool isMainMenu = true;
 void main()
 {
+    backgroundTexture.loadFromFile("sky.png");
+    backgroundTexture.setRepeated(true);
+    waveTexture.loadFromFile("vagues.png");
+    Sprite skySprite;
+    Sprite skySprite2;
+    Sprite waveSprite;
+    Sprite waveSprite2;
+    skySprite.setTexture(backgroundTexture);
+    skySprite2.setTexture(backgroundTexture);
+    waveSprite.setTexture(waveTexture);
+    waveSprite2.setTexture(waveTexture);
+    skySprite2.setPosition(backgroundTexture.getSize().x,0);
+    waveSprite2.setPosition(waveTexture.getSize().x,0);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
     RenderWindow window(sf::VideoMode::getDesktopMode(), "Whale-s-revenge");
@@ -73,6 +87,19 @@ void main()
             if (event.type == Event::Closed)
                 window.close();
         }
+        if (skySprite.getPosition().x + backgroundTexture.getSize().x < 0) {
+            skySprite.setPosition(skySprite2.getPosition().x + backgroundTexture.getSize().x, 0);
+            waveSprite.setPosition(waveSprite2.getPosition().x + waveTexture.getSize().x, 0);
+        }
+        if (skySprite2.getPosition().x + backgroundTexture.getSize().x < 0) {
+            skySprite2.setPosition(skySprite.getPosition().x + backgroundTexture.getSize().x, 0);
+            waveSprite2.setPosition(waveSprite.getPosition().x + waveTexture.getSize().x, 0);
+        }
+        
+        skySprite.move(- 5, 0);
+        skySprite2.move(-5, 0);
+        waveSprite.move(-10, 0);
+        waveSprite2.move(-10, 0);
         window.clear();
         if (m.mdisplay(window))
         {
@@ -80,12 +107,17 @@ void main()
         }
         else
         {
+            window.draw(skySprite);
+            window.draw(skySprite2);
+            window.draw(waveSprite);
+            window.draw(waveSprite2);
             window.draw(player.PlayerSprite);
             for (int i = 0; i < player.bulles.size(); i++) {
                 window.draw(player.bulles[i]);
                 player.bulles[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
             }
         }
+        
 
 #pragma region Requins
         sharks.draw(window);

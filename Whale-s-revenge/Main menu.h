@@ -1,5 +1,6 @@
 ﻿#include <SFML/Graphics.hpp>
 #include "button.h"
+#include <iostream>
 using namespace sf;
 extern button play_button;
 class Main_menu

@@ -4,11 +4,9 @@
 #include <math.h>
 #include "Main menu.h"
 
+
 using namespace sf;
 using namespace std;
-
-int PosX = 0;
-int PosY = 0;
 bool isMainMenu = true;
 void main()
 {

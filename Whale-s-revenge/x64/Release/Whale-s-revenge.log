@@ -1,0 +1,18 @@
+﻿  Whale_s_revenge.cpp
+C:\Users\Mizunoha\source\repos\Whale-s-revenge\Whale-s-revenge\Whale_s_revenge.cpp(20,1): warning C4326: le type de retour de 'main' doit être 'int' au lieu de 'void'
+C:\Users\Mizunoha\source\repos\Whale-s-revenge\Whale-s-revenge\Whale_s_revenge.cpp(32,55): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\Mizunoha\source\repos\Whale-s-revenge\Whale-s-revenge\Whale_s_revenge.cpp(33,50): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+  Génération de code en cours
+  1 of 312 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Fin de la génération du code
+  Whale-s-revenge.vcxproj -> C:\Users\Mizunoha\Source\Repos\Whale-s-revenge\x64\Release\Whale-s-revenge.exe

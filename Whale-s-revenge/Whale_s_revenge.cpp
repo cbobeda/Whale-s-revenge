@@ -89,10 +89,16 @@ void main()
         }
         if (skySprite.getPosition().x + backgroundTexture.getSize().x < 0) {
             skySprite.setPosition(skySprite2.getPosition().x + backgroundTexture.getSize().x, 0);
+        }
+        if (waveSprite.getPosition().x + waveTexture.getSize().x < 0)
+        {
             waveSprite.setPosition(waveSprite2.getPosition().x + waveTexture.getSize().x, 0);
         }
         if (skySprite2.getPosition().x + backgroundTexture.getSize().x < 0) {
             skySprite2.setPosition(skySprite.getPosition().x + backgroundTexture.getSize().x, 0);
+        }
+        if (waveSprite2.getPosition().x + waveTexture.getSize().x < 0)
+        {
             waveSprite2.setPosition(waveSprite.getPosition().x + waveTexture.getSize().x, 0);
         }
         

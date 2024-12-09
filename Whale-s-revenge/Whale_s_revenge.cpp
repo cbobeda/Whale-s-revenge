@@ -14,6 +14,7 @@ Player player;
 Shark sharks;
 
 bool createShark = false;
+bool isDead = false;
 
 Texture backgroundTexture;
 Texture waveTexture;
@@ -76,7 +77,7 @@ void main()
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
-                sharks.CreateShark(20, 30);
+                sharks.CreateShark(100, 10);
                 createShark = true;
             }
         }
@@ -89,20 +90,24 @@ void main()
         }
         
 #pragma region Tire Principale & Secondaire
-        if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.2) {
+        if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.4) {
             player.CreateBulles();
             player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
             clock.restart();
         }
 
-        if (Mouse::isButtonPressed(Mouse::Right) && CDCompetence.getElapsedTime().asSeconds() > 5) {
-            player.CreateWave();
-            player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
-            CDCompetence.restart();
+        if (Mouse::isButtonPressed(Mouse::Right) && CDCompetence.getElapsedTime().asSeconds() > 2) {
+            if (player.MetalScrap >= 50) {
+                player.MetalScrap -= 50;
+                player.CreateWave();
+                player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
+                CDCompetence.restart();
+            }
+            
         }
 
         for (size_t i = 0; i < player.timers1.size(); i++) {
-            if (player.timers1[i].getElapsedTime().asSeconds() > 1) {
+            if (player.timers1[i].getElapsedTime().asSeconds() > 2) {
                 player.DeleteBulles();
             }
         }
@@ -127,9 +132,24 @@ void main()
             }
         }
 
+        for (size_t i = 0; i < player.wave.size(); ++i) {
+            for (size_t j = 0; j < sharks.sharks.size(); ++j) {
+                if (player.wave[i].getGlobalBounds().intersects(sharks.sharks[j].shape.getGlobalBounds())) {
+                    sharks.takeDamage(j, player.PlayerDamage);
+                    if (sharks.takeDamage(j, player.PlayerDamage)) {
+                        player.MetalScrap += 10;
+                    }
+                    i--;
+                    break;
+                }
+            }
+        }
+
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
             if (sharks.ennemyATK[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
-                player.TakeDamage();
+                cerr << "DEGATS PRIT" << endl;
+                sharks.DeleteATK();
+                player.TakeDamage(); // A revoir plus tard
             }
         }
 
@@ -170,6 +190,7 @@ void main()
             window.draw(waveSprite);
             window.draw(waveSprite2);
             window.draw(player.PlayerSprite);
+
             for (int i = 0; i < player.bulles.size(); i++) {
                 window.draw(player.bulles[i]);
                 player.bulles[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
@@ -199,5 +220,13 @@ void main()
         window.draw(ArgentTemp);
         window.display();
         
+       /* if (!isDead) {
+            if (player.Life <= 0) {
+                isDead = true;
+                m.actmenu();
+                sharks.DeleteAll();
+                player.MetalScrap = 0;
+            }
+        }*/
     }
 }

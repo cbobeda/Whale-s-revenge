@@ -12,11 +12,11 @@ void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
     const int distanceLife = 3;
 
     for (int i = 0; i < MeleeSharks; i++) {
-        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Red,sf::Vector2f(rand() % 2200 + 2000, rand() % 400 + 400), meleeLife, false);
+        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Red,sf::Vector2f(rand() % 2200 + 2000, rand() % 600 + 300), meleeLife, false);
     }
 
     for (int j = 0; j < DistanceSharks; j++) {
-        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Green,sf::Vector2f(rand() % 2500 + 2000, rand() % 400 + 400), distanceLife, true);
+        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Green,sf::Vector2f(rand() % 2500 + 2000, rand() % 600 + 300), distanceLife, true);
     }
 
     SharkCreated = true;
@@ -71,4 +71,13 @@ void Shark::SharkATK() {
             ennemyATK.back().setPosition(shark.shape.getPosition());
         }
     }
+}
+
+void Shark::DeleteAll() {
+        sharks.clear();
+        ennemyATK.clear();
+}
+
+void Shark::DeleteATK() {
+    ennemyATK.erase(ennemyATK.begin());
 }

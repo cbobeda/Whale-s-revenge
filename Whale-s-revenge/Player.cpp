@@ -40,9 +40,10 @@ void Player::DeleteBulles() {
 }
 
 void Player::CreateWave() {
-	wave.push_back(RectangleShape());
-	wave.back().setSize(Vector2f(100, 400));
-	wave.back().setOrigin(50, 200);
+	wave.push_back(CircleShape());
+	wave.back().setRadius(500);
+	wave.back().setFillColor(Color(175, 85, 197));
+	wave.back().setOrigin(500, 500);
 	wave.back().setPosition(PlayerSprite.getPosition());
 	timers2.push_back(Clock());
 }

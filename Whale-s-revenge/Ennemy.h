@@ -22,11 +22,8 @@ public:
 
 	int Life;
 	bool SharkCreated = false;
-	float AttackEnnemyCD;
 
 	sf::Clock EnnemyATKCD;
-
-	void newCD();
 
 	void CreateShark(int MeleeSharks, int DistanceSharks);
 
@@ -37,4 +34,8 @@ public:
 	bool takeDamage(size_t sharkIndex,int damage);
 
 	void SharkATK();
+
+	void DeleteAll();
+
+	void DeleteATK();
 };

@@ -6,7 +6,7 @@ class Player {
 public:
 
 	std::vector<sf::CircleShape> bulles;
-	std::vector<sf::RectangleShape> wave;
+	std::vector<sf::CircleShape> wave;
 
 	std::vector<float> angles;
 

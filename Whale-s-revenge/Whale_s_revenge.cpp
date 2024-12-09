@@ -220,13 +220,13 @@ void main()
         window.draw(ArgentTemp);
         window.display();
         
-       /* if (!isDead) {
+       if (!isDead) {
             if (player.Life <= 0) {
                 isDead = true;
                 m.actmenu();
                 sharks.DeleteAll();
                 player.MetalScrap = 0;
             }
-        }*/
+        }
     }
 }

@@ -4,10 +4,23 @@
 
 class Shark {
 public:
-	std::vector<sf::RectangleShape> sharks;
+
+	std::vector<sf::CircleShape> ennemyATK;
+
+	struct SharkEnnemy {
+		sf::RectangleShape shape;
+		int life;
+		bool isRanged;
+
+		SharkEnnemy(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int initialLife, bool ranged): life(initialLife), isRanged(ranged) {
+			shape.setSize(size);
+			shape.setFillColor(color);
+			shape.setPosition(position);
+		}
+	};
+	std::vector<SharkEnnemy> sharks;
 
 	int Life;
-	float Speed;
 	bool SharkCreated = false;
 
 	void CreateShark(int MeleeSharks, int DistanceSharks);
@@ -15,4 +28,8 @@ public:
 	void draw(sf::RenderWindow& window);
 
 	void moveAll();
+
+	bool takeDamage(size_t sharkIndex,int damage);
+
+	void SharkATK();
 };

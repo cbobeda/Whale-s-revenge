@@ -5,6 +5,10 @@
 #include "Main menu.h"
 #include "Player.h"
 #include "Ennemy.h"
+#include <string>
+
+using namespace sf;
+using namespace std;
 
 Player player;
 Shark sharks;
@@ -13,11 +17,10 @@ bool createShark = false;
 
 Texture backgroundTexture;
 Texture waveTexture;
-using namespace sf;
-using namespace std;
 bool isMainMenu = true;
 void main()
 {
+    string MetalScrapString = to_string(player.MetalScrap);
     backgroundTexture.loadFromFile("sky.png");
     backgroundTexture.setRepeated(true);
     waveTexture.loadFromFile("vagues.png");
@@ -37,7 +40,15 @@ void main()
     window.setFramerateLimit(60);
 
     Clock clock;
+    Clock CDCompetence;
     Main_menu m(600,600);
+
+    // J'affiche pour voir si ca fonctionne pour le moment
+    Font font;
+    font.loadFromFile("MinecraftStandard.otf");
+
+    Text ArgentTemp(MetalScrapString,font,50);
+    ArgentTemp.setPosition(50, 50);
 
     while (window.isOpen())
     {
@@ -58,27 +69,47 @@ void main()
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
-                sharks.CreateShark(5, 9);
+                sharks.CreateShark(5, 2);
                 createShark = true;
             }
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            player.ProjectileSpeed += 0.05f;
-        }
-        if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            player.ProjectileSpeed -= 0.05f;
-        }
-
+#pragma region Tire Principale & Secondaire
         if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.2) {
             player.CreateBulles();
             player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
             clock.restart();
         }
 
-        for (size_t i = 0; i < player.timers.size(); i++) {
-            if (player.timers[i].getElapsedTime().asSeconds() > 1) {
+        if (Mouse::isButtonPressed(Mouse::Right) && CDCompetence.getElapsedTime().asSeconds() > 5) {
+            player.CreateWave();
+            player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
+            CDCompetence.restart();
+        }
+
+        for (size_t i = 0; i < player.timers1.size(); i++) {
+            if (player.timers1[i].getElapsedTime().asSeconds() > 1) {
                 player.DeleteBulles();
+            }
+        }
+        for (size_t i = 0; i < player.timers2.size(); i++) {
+            if (player.timers2[i].getElapsedTime().asSeconds() > 2.5f) {
+                player.DeleteWave();
+            }
+        }
+#pragma endregion Tire Principale & Secondaire
+
+        for (size_t i = 0; i < player.bulles.size(); ++i) {
+            for (size_t j = 0; j < sharks.sharks.size(); ++j) {
+                if (player.bulles[i].getGlobalBounds().intersects(sharks.sharks[j].shape.getGlobalBounds())) {
+                    player.DeleteBulles();
+                    sharks.takeDamage(j, player.PlayerDamage);
+                    if (sharks.takeDamage(j, player.PlayerDamage)) {
+                        player.MetalScrap += 10;
+                    }
+                    i--;
+                    break;
+                }
             }
         }
 
@@ -122,6 +153,10 @@ void main()
                 window.draw(player.bulles[i]);
                 player.bulles[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
             }
+            for (int i = 0; i < player.wave.size(); i++) {
+                window.draw(player.wave[i]);
+                player.wave[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
+            }
         }
         
 
@@ -131,7 +166,16 @@ void main()
         if (sharks.SharkCreated) {
             sharks.moveAll();
         }
+        for (int i = 0; i < sharks.ennemyATK.size(); i++) {
+            window.draw(sharks.ennemyATK[i]);
+            sharks.ennemyATK[i].move(-5, 0);
+        }
 #pragma endregion Requins
+
+        string MetalScrapString = to_string(player.MetalScrap);
+        ArgentTemp.setString(MetalScrapString);
+
+        window.draw(ArgentTemp);
         window.display();
         
     }

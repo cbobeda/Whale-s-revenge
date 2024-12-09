@@ -2,6 +2,8 @@
 
 button play_button(100,100,100,100);
 button option_button(100,300,100,100);
+button exit_button(100,500,100,100);
+button fullscreen(500,200,100,100);
 bool active = true;
 bool frame = false;
 bool isready = false;
@@ -69,18 +71,26 @@ bool Main_menu::mdisplay(RenderWindow& window)
     else
     {
         window.draw(play_button.bdisplay(Color::Green,Color::Black));
-        window.draw(option_button.bdisplay(Color::Red,Color::Black));
+        window.draw(option_button.bdisplay(Color::White,Color::Black));
+        window.draw(exit_button.bdisplay(Color::Red,Color::Black));
     }
     window.draw(text);
     std::cout << Mouse::getPosition(window).x << std::endl;
     std::cout << Mouse::getPosition(window).y << std::endl;
-    if (play_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+    if (active)
     {
-        active = false;
-    }
-    if (option_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
-    {
-        option = true;
+        if (play_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+        {
+            active = false;
+        }
+        if (option_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+        {
+            option = true;
+        }
+        if (exit_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+        {
+            window.close();
+        }
     }
     if (!active)
         window.clear();

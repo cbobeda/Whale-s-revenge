@@ -43,7 +43,7 @@ void main()
     whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
-    RenderWindow window(sf::VideoMode::getDesktopMode(), "Whale-s-revenge");
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
     window.setFramerateLimit(60);
 
     Clock clock;

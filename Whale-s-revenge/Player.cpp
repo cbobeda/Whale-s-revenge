@@ -52,3 +52,7 @@ void Player::DeleteWave() {
 	angles.erase(angles.begin());
 	timers2.erase(timers2.begin());
 }
+
+void Player::TakeDamage() {
+	Life -= 1;
+}

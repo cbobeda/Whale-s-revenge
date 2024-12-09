@@ -12,11 +12,11 @@ void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
     const int distanceLife = 3;
 
     for (int i = 0; i < MeleeSharks; i++) {
-        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Red,sf::Vector2f(2200, rand() % 400 + 400), meleeLife, false);
+        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Red,sf::Vector2f(rand() % 2200 + 2000, rand() % 400 + 400), meleeLife, false);
     }
 
     for (int j = 0; j < DistanceSharks; j++) {
-        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Green,sf::Vector2f(1800, rand() % 400 + 400), distanceLife, true);
+        sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Green,sf::Vector2f(rand() % 2500 + 2000, rand() % 400 + 400), distanceLife, true);
     }
 
     SharkCreated = true;
@@ -34,11 +34,15 @@ void Shark::draw(sf::RenderWindow& window) {
                 shark.shape.move(-5, 0);
             }
             else {
-                if (shark.shape.getPosition().x > 1000) {
+                if (shark.shape.getPosition().x > 1700) {
                     shark.shape.move(-5, 0); 
                 }
                 else {
+                    if (EnnemyATKCD.getElapsedTime().asSeconds() > 1) {
                         SharkATK();
+                        EnnemyATKCD.restart();
+                    }
+
                     
                 }               
             }
@@ -61,8 +65,8 @@ void Shark::SharkATK() {
     for (auto& shark : sharks) {
         if (shark.isRanged) {
             ennemyATK.push_back(CircleShape());
-            ennemyATK.back().setRadius(5);
-            ennemyATK.back().setOrigin(5, 5);
+            ennemyATK.back().setRadius(10);
+            ennemyATK.back().setOrigin(10, 10);
             ennemyATK.back().setFillColor(Color::Yellow);
             ennemyATK.back().setPosition(shark.shape.getPosition());
         }

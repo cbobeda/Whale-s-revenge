@@ -47,7 +47,6 @@ bool Main_menu::mdisplay(RenderWindow& window)
     option_text.setOutlineThickness(5);
     option_text.setPosition(Vector2f(960,500));
     option_text.setString("OPTION");
-    std::cout << text.getLocalBounds().getSize().y << std::endl;
    
     Texture background;
     if (frame)
@@ -75,8 +74,6 @@ bool Main_menu::mdisplay(RenderWindow& window)
         window.draw(exit_button.bdisplay(Color::Red,Color::Black));
     }
     window.draw(text);
-    std::cout << Mouse::getPosition(window).x << std::endl;
-    std::cout << Mouse::getPosition(window).y << std::endl;
     if (active)
     {
         if (play_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))

@@ -13,7 +13,8 @@ public:
 	std::vector<sf::Clock> timers1;
 	std::vector<sf::Clock> timers2;
 
-	sf::CircleShape PlayerSprite;
+	sf::Texture whaleTexture;
+	sf::Sprite PlayerSprite;
 	int Life;
 	float Speed;
 	float ProjectileSpeed;

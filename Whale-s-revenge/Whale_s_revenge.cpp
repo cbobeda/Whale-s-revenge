@@ -17,7 +17,12 @@ bool createShark = false;
 
 Texture backgroundTexture;
 Texture waveTexture;
-bool isMainMenu = true;
+IntRect whaleRect;
+Clock watchanime;
+float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
+size_t currentFrameanime = 0;
+
+
 void main()
 {
     string MetalScrapString = to_string(player.MetalScrap);
@@ -28,12 +33,14 @@ void main()
     Sprite skySprite2;
     Sprite waveSprite;
     Sprite waveSprite2;
+    Sprite whaleSprite;
     skySprite.setTexture(backgroundTexture);
     skySprite2.setTexture(backgroundTexture);
     waveSprite.setTexture(waveTexture);
     waveSprite2.setTexture(waveTexture);
     skySprite2.setPosition(backgroundTexture.getSize().x,0);
     waveSprite2.setPosition(waveTexture.getSize().x,0);
+    whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
     RenderWindow window(sf::VideoMode::getDesktopMode(), "Whale-s-revenge");
@@ -73,7 +80,14 @@ void main()
                 createShark = true;
             }
         }
-
+        if (watchanime.getElapsedTime().asSeconds() > frameDurationanime) {
+            IntRect newRect = player.PlayerSprite.getTextureRect();
+            newRect.left += 64;
+            if (newRect.left >= 640) {newRect.left -= 640;}
+            player.PlayerSprite.setTextureRect(newRect);
+            watchanime.restart();
+        }
+        
 #pragma region Tire Principale & Secondaire
         if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.2) {
             player.CreateBulles();
@@ -98,7 +112,7 @@ void main()
             }
         }
 #pragma endregion Tire Principale & Secondaire
-
+        
         for (size_t i = 0; i < player.bulles.size(); ++i) {
             for (size_t j = 0; j < sharks.sharks.size(); ++j) {
                 if (player.bulles[i].getGlobalBounds().intersects(sharks.sharks[j].shape.getGlobalBounds())) {
@@ -137,6 +151,7 @@ void main()
         skySprite2.move(-5, 0);
         waveSprite.move(-10, 0);
         waveSprite2.move(-10, 0);
+        whaleSprite.setPosition(whaleSprite.getPosition().x + 64, 0);
         window.clear();
         if (m.mdisplay(window))
         {

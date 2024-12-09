@@ -7,6 +7,20 @@ bool isready = false;
 Clock watch;
 float frameDuration = 0.5f; // Durée d'une frame (en secondes)
 size_t currentFrame = 0;
+
+void Main_menu::actmenu()
+{
+    if (active)
+    {
+        active = false;
+    }
+    else
+    {
+        active = true;
+    }
+}
+
+
 bool Main_menu::mdisplay(RenderWindow& window)
 {
     Font font;

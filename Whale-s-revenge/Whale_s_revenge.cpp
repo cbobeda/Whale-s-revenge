@@ -69,7 +69,7 @@ void main()
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
-                sharks.CreateShark(5, 2);
+                sharks.CreateShark(20, 30);
                 createShark = true;
             }
         }
@@ -110,6 +110,12 @@ void main()
                     i--;
                     break;
                 }
+            }
+        }
+
+        for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
+            if (sharks.ennemyATK[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+                player.TakeDamage();
             }
         }
 
@@ -168,7 +174,7 @@ void main()
         }
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
             window.draw(sharks.ennemyATK[i]);
-            sharks.ennemyATK[i].move(-5, 0);
+            sharks.ennemyATK[i].move(-10, 0);
         }
 #pragma endregion Requins
 
@@ -177,6 +183,10 @@ void main()
 
         window.draw(ArgentTemp);
         window.display();
+
+        if (player.Life <= 0) {
+            m.
+        }
         
     }
 }

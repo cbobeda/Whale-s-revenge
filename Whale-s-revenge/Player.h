@@ -25,4 +25,5 @@ public:
 	void DeleteBulles();
 	void CreateWave();
 	void DeleteWave();
+	void TakeDamage();
 };

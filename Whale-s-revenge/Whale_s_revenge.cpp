@@ -198,10 +198,6 @@ void main()
 
         window.draw(ArgentTemp);
         window.display();
-
-        if (player.Life <= 0) {
-            m.
-        }
         
     }
 }

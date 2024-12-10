@@ -12,6 +12,6 @@ private:
 public:
     Main_menu(int h,int w): height(h),width(w) {};
 
-    bool mdisplay(sf::RenderWindow& window);
+    bool mdisplay(sf::RenderWindow& window,Event event);
     void actmenu();
 };

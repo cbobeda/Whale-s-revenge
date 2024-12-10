@@ -179,7 +179,7 @@ void main()
         waveSprite2.move(-10, 0);
         whaleSprite.setPosition(whaleSprite.getPosition().x + 64, 0);
         window.clear();
-        if (m.mdisplay(window))
+        if (m.mdisplay(window,event))
         {
             
         }
@@ -190,6 +190,7 @@ void main()
             window.draw(waveSprite);
             window.draw(waveSprite2);
             window.draw(player.PlayerSprite);
+            window.draw(ArgentTemp);
 
             for (int i = 0; i < player.bulles.size(); i++) {
                 window.draw(player.bulles[i]);
@@ -217,7 +218,7 @@ void main()
         string MetalScrapString = to_string(player.MetalScrap);
         ArgentTemp.setString(MetalScrapString);
 
-        window.draw(ArgentTemp);
+        
         window.display();
         
        if (!isDead) {

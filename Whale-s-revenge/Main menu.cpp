@@ -1,16 +1,23 @@
 ﻿#include "Main menu.h"
 
-button play_button(100,100,100,100);
-button option_button(100,300,100,100);
-button exit_button(100,500,100,100);
-button fullscreen(500,200,100,100);
+button play_button(100,300,300,100,false);
+button option_button(100,500,300,100,false);
+button option_exit_button(100,200,100,100,false);
+button exit_button(100,700,300,100,false);
+button easy(500,300,100,100,true);
+button medium(500,500,100,100,true);
+button hard(500,700,100,100,true);
 bool active = true;
 bool frame = false;
 bool isready = false;
 bool option = false;
+bool bcd = true;
 Clock watch;
 float frameDuration = 0.5f; // Durée d'une frame (en secondes)
-size_t currentFrame = 0;
+
+sf::Clock buttonCd;
+float bframeDuration = 0.5f; // Durée d'une frame (en secondes)
+
 
 void Main_menu::actmenu()
 {
@@ -25,7 +32,7 @@ void Main_menu::actmenu()
 }
 
 
-bool Main_menu::mdisplay(RenderWindow& window)
+bool Main_menu::mdisplay(RenderWindow& window,Event event)
 {
     Font font;
     font.loadFromFile("MinecraftStandard.otf");
@@ -39,14 +46,19 @@ bool Main_menu::mdisplay(RenderWindow& window)
     text.setOrigin(262,26.5);
     text.setPosition(Vector2f(960,200));
     text.setScale(1.5,1.5);
-    Text option_text;
-    option_text.setFont(font);
-    option_text.setCharacterSize(40);
-    option_text.setFillColor(Color::White);
-    option_text.setOutlineColor(Color::Black);
-    option_text.setOutlineThickness(5);
-    option_text.setPosition(Vector2f(960,500));
-    option_text.setString("OPTION");
+
+    
+    Text option_text2;
+    option_text2.setFont(font);
+    option_text2.setCharacterSize(40);
+    option_text2.setFillColor(Color::White);
+    option_text2.setOutlineColor(Color::Black);
+    option_text2.setOutlineThickness(5);
+    sf::FloatRect option_text2rect = option_text2.getGlobalBounds();
+    option_text2.setOrigin(Vector2f(option_text2rect.left + option_text2rect.width/2,option_text2rect.top + option_text2rect.height/2));
+    option_text2.setPosition(Vector2f(window.getSize().x/2,300));
+    option_text2.setScale(1.5,1.5);
+    option_text2.setString("OPTION");
    
     Texture background;
     if (frame)
@@ -65,13 +77,42 @@ bool Main_menu::mdisplay(RenderWindow& window)
     window.draw(background_sprite);
     if (option)
     {
-        window.draw(option_text);
+        window.draw(option_text2);
+        option_exit_button.bdisplay(Color::Red,Color::Black,window,20,"");
+        easy.bdisplay(Color::Yellow,Color::Black,window,10,"EASY");
+        if (easy.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && bcd)
+        {
+            easy.setclicked();
+            medium.setclicked(true);
+            hard.setclicked(true);
+            bcd = false;
+        }
+        medium.bdisplay(Color::Yellow,Color::Black,window,10,"MEDIUM");
+        if (medium.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && bcd)
+        {
+            medium.setclicked();
+            easy.setclicked(true);
+            hard.setclicked(true);
+            bcd = false;
+        }
+        hard.bdisplay(Color::Yellow,Color::Black,window,10,"HARD");
+        if (hard.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && bcd)
+        {
+            hard.setclicked();
+            medium.setclicked(true);
+            easy.setclicked(true);
+            bcd = false;
+        }
+        if (option_exit_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+        {
+            option = false;
+        }
     }
     else
     {
-        window.draw(play_button.bdisplay(Color::Green,Color::Black));
-        window.draw(option_button.bdisplay(Color::White,Color::Black));
-        window.draw(exit_button.bdisplay(Color::Red,Color::Black));
+        play_button.bdisplay(Color::Green,Color::Black,window,20,"PLAY");
+        option_button.bdisplay(Color::Blue,Color::Black,window,20,"OPTION");
+        exit_button.bdisplay(Color::Red,Color::Black,window,20,"EXIT");
     }
     window.draw(text);
     if (active)
@@ -101,6 +142,13 @@ bool Main_menu::mdisplay(RenderWindow& window)
             frame = true;
         }
         watch.restart();
+        
     }
+    if (buttonCd.getElapsedTime().asSeconds() > bframeDuration)
+    {
+        bcd = true;
+        buttonCd.restart();
+    }
+    
     return active;
 }

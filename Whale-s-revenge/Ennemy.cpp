@@ -6,7 +6,8 @@
 #include <cstdlib>
 
 using namespace sf;
-	
+
+#pragma region ClassRequin
 void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
     const int meleeLife = 4;
     const int distanceLife = 3;
@@ -18,8 +19,6 @@ void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
     for (int j = 0; j < DistanceSharks; j++) {
         sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Green,sf::Vector2f(rand() % 2500 + 2000, rand() % 600 + 300), distanceLife, true);
     }
-
-    SharkCreated = true;
 }
 
 void Shark::draw(sf::RenderWindow& window) {
@@ -41,9 +40,7 @@ void Shark::draw(sf::RenderWindow& window) {
                     if (EnnemyATKCD.getElapsedTime().asSeconds() > 1) {
                         SharkATK();
                         EnnemyATKCD.restart();
-                    }
-
-                    
+                    }                  
                 }               
             }
         }
@@ -69,6 +66,9 @@ void Shark::SharkATK() {
             ennemyATK.back().setOrigin(10, 10);
             ennemyATK.back().setFillColor(Color::Yellow);
             ennemyATK.back().setPosition(shark.shape.getPosition());
+
+
+
         }
     }
 }
@@ -81,3 +81,36 @@ void Shark::DeleteAll() {
 void Shark::DeleteATK() {
     ennemyATK.erase(ennemyATK.begin());
 }
+
+#pragma endregion ClassRequin
+
+#pragma region ClassBateau
+
+void Boat::CreateBoats(int BoatNumber) {
+    int BaseBoatSpawn = 2200;
+    for (int i = 0; i < BoatNumber; i++) {
+        BaseBoatSpawn += (rand() % 900) + 1000;
+
+        boats.emplace_back(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(BaseBoatSpawn, 400), 5, 10);
+    }
+}
+
+void Boat::DrawBoat(sf::RenderWindow& window) {
+    for (const auto& boat : boats) {
+        window.draw(boat.boatshape);
+    }
+}
+
+void Boat::MoveBoat() {
+    for (auto& boat : boats) {
+        boat.boatshape.move(-8, 0);
+    }
+}
+
+void Boat::BoatATK() {
+
+}
+void Boat::BoatTakeDamage() {
+
+}
+#pragma endregion ClassBateau

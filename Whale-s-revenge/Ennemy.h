@@ -19,9 +19,7 @@ public:
 		}
 	};
 	std::vector<SharkEnnemy> sharks;
-
-	int Life;
-	bool SharkCreated = false;
+	std::vector<float> pojectileAngle;
 
 	sf::Clock EnnemyATKCD;
 
@@ -38,4 +36,30 @@ public:
 	void DeleteAll();
 
 	void DeleteATK();
+};
+
+class Boat {
+public:
+
+	struct BoatEnnemy {
+		sf::RectangleShape boatshape;
+		int life;
+		float Speed;
+
+		BoatEnnemy(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int Life, float Speed) : life(Life), Speed(Speed) {
+			boatshape.setSize(size);
+			boatshape.setFillColor(color);
+			boatshape.setPosition(position);
+		}
+	};
+
+	std::vector<BoatEnnemy> boats;
+	
+	sf::Clock BoatsATK;
+
+	void CreateBoats(int BoatNumber);
+	void DrawBoat(sf::RenderWindow& window);
+	void MoveBoat();
+	void BoatATK();
+	void BoatTakeDamage();
 };

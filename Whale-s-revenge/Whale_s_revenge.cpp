@@ -12,9 +12,12 @@ using namespace std;
 
 Player player;
 Shark sharks;
+Boat boats;
 
 bool createShark = false;
 bool isDead = false;
+
+int WaveIndex = 0;
 
 Texture backgroundTexture;
 Texture waveTexture;
@@ -23,6 +26,13 @@ Clock watchanime;
 float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
 size_t currentFrameanime = 0;
 
+class Projectile {
+public:
+    float directionX, directionY;
+    bool hasDirection = false;
+
+    // Autres attributs et méthodes...
+};
 
 void main()
 {
@@ -62,23 +72,26 @@ void main()
     {
         Event event;
 
-        if (Keyboard::isKeyPressed(Keyboard::D)) {
+        if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
             player.PlayerSprite.move(player.Speed, 0);
         }
-        if (Keyboard::isKeyPressed(Keyboard::Q)) {
+        if (Keyboard::isKeyPressed(Keyboard::Q) && player.PlayerSprite.getPosition().x - player.Speed > 0) {
             player.PlayerSprite.move(-player.Speed, 0);
         }
         if (Keyboard::isKeyPressed(Keyboard::Z) && player.PlayerSprite.getPosition().y - player.Speed > 400) {
             player.PlayerSprite.move(0, -player.Speed);
         }
-        if (Keyboard::isKeyPressed(Keyboard::S)) {
+        if (Keyboard::isKeyPressed(Keyboard::S) && player.PlayerSprite.getPosition().y - player.Speed < 1000) {
             player.PlayerSprite.move(0, player.Speed);
         }
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
-                sharks.CreateShark(100, 10);
+                sharks.CreateShark(2, 5);
+                boats.CreateBoats(3);
+                cerr << "Vague 0" << endl;
                 createShark = true;
+                WaveIndex++;
             }
         }
         if (watchanime.getElapsedTime().asSeconds() > frameDurationanime) {
@@ -90,7 +103,7 @@ void main()
         }
         
 #pragma region Tire Principale & Secondaire
-        if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.4) {
+        if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.2) {
             player.CreateBulles();
             player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
             clock.restart();
@@ -201,16 +214,40 @@ void main()
             }
         }
         
+        if (createShark) {
+            cerr << WaveIndex << endl;
+            if (sharks.sharks.size() == 0) {
+                switch (WaveIndex) {
+                case 1 :
+                    sharks.CreateShark(4, 6);
+                    cerr << "Vague 1" << endl;
+                    break;
+                case 2:
+                    sharks.CreateShark(9, 12);
+                    cerr << "Vague 2" << endl;
+                    break;
+                case 3:
+                    sharks.CreateShark(20, 15);
+                    cerr << "Vague 3" << endl;
+                    break;
+                }
+                WaveIndex++;
+            }
+        }
 
 #pragma region Requins
         sharks.draw(window);
+        boats.DrawBoat(window);
 
-        if (sharks.SharkCreated) {
+        if (sharks.sharks.size() != 0) {
             sharks.moveAll();
+            boats.MoveBoat();
         }
+
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
             window.draw(sharks.ennemyATK[i]);
-            sharks.ennemyATK[i].move(-10, 0);
+            sharks.pojectileAngle.push_back(player.PlayerSprite.getPosition().y - sharks.sharks[i].shape.getPosition().y);
+            sharks.ennemyATK[i].move(-10,(sharks.pojectileAngle[i]));
         }
 #pragma endregion Requins
 

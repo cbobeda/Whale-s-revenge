@@ -78,8 +78,8 @@ void Shark::DeleteAll() {
         ennemyATK.clear();
 }
 
-void Shark::DeleteATK() {
-    ennemyATK.erase(ennemyATK.begin());
+void Shark::DeleteATK(size_t index) {
+    ennemyATK.erase(ennemyATK.begin() + index);
 }
 
 #pragma endregion ClassRequin
@@ -96,7 +96,7 @@ void Boat::CreateBoats(int BoatNumber) {
 }
 
 void Boat::DrawBoat(sf::RenderWindow& window) {
-    for (const auto& boat : boats) {
+    for (auto& boat : boats) {
         window.draw(boat.boatshape);
     }
 }
@@ -108,8 +108,23 @@ void Boat::MoveBoat() {
 }
 
 void Boat::BoatATK() {
+    for (size_t i = 0; i < boats.size(); ++i) {
+        auto& boat = boats[i];
 
+        if (!boat.hasAttacked && boat.boatshape.getPosition().x < 1900) {
+            if (boat.attackTimer.getElapsedTime().asMilliseconds() >= boat.attackDelay) {
+                // Mettre la futur attaque ici plus tard
+
+                sf::Vector2f position = boat.boatshape.getPosition();
+                std::cout << "Boat " << i + 1 << " has attacked at position ("
+                    << position.x << ", " << position.y << ")!" << std::endl;
+
+                boat.hasAttacked = true;
+            }
+        }
+    }
 }
+
 void Boat::BoatTakeDamage() {
 
 }

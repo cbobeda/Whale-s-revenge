@@ -169,7 +169,7 @@ void main()
         }
 
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
-            if (sharks.ennemyATK[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+            if (sharks.ennemyATK[i]->shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
                 cerr << "DEGATS PRIT" << endl;
                 sharks.DeleteATK(i);
                 player.TakeDamage();
@@ -261,13 +261,13 @@ void main()
         boats.DrawBoat(window);
 
         if (sharks.sharks.size() != 0) {
-            sharks.moveAll();
+            sharks.moveAll(player.PlayerSprite.getPosition());
             boats.MoveBoat();
         }
 
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
             window.draw(sharks.ennemyATK[i]->shape);
-            sharks.ennemyATK[i]->update(5.0);
+            sharks.ennemyATK[i]->update(20.0);
         }
         if (boats.boats.size() > 0) {
             boats.BoatATK();

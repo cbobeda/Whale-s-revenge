@@ -7,6 +7,21 @@
 
 using namespace sf;
 #pragma region ClassRequin
+
+void Shark::SetDifficulty(int DifficultyIndex) {
+    switch (DifficultyIndex) {
+    case 1:
+        projectileSpeed = 15;
+        break;
+    case 2:
+        projectileSpeed = 20;
+        break;
+    case 3:
+        projectileSpeed = 80;
+        break;
+    }
+}
+
 void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
     const int meleeLife = 4;
     const int distanceLife = 3;
@@ -138,8 +153,12 @@ void Boat::BiggerATK(size_t index) {
     }
 }
 
-void Boat::BoatTakeDamage() {
+void Boat::BoatTakeDamage(int PlayerDamage) {
+    BoatLife -= PlayerDamage;
+}
 
+void Boat::BoatATKTakeDamage(int PlayerDamage) {
+    BoatATKLife -= PlayerDamage;
 }
 
 #pragma endregion ClassBateau

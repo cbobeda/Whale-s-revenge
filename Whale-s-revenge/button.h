@@ -1,6 +1,8 @@
-﻿#include <SFML/Graphics.hpp>
-#include <iostream>
+﻿#ifndef SHAPE_CPP
+#define SHAPE_CPP
+
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 class button
 {
@@ -20,3 +22,5 @@ public:
     void setclicked(bool reset = false);
     void bdisplay(sf::Color couleur,sf::Color couleur2,sf::RenderWindow& window,int size,sf::String isText = "");
 };
+
+#endif

@@ -11,7 +11,7 @@ private:
     
 public:
     Main_menu(int h,int w): height(h),width(w) {};
-
+    int DifficultyIndex = 2;
     bool mdisplay(sf::RenderWindow& window,Event event);
     void actmenu();
 };

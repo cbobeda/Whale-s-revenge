@@ -12,6 +12,7 @@ bool frame = false;
 bool isready = false;
 bool option = false;
 bool bcd = true;
+
 Clock watch;
 float frameDuration = 0.5f; // Durée d'une frame (en secondes)
 
@@ -86,6 +87,7 @@ bool Main_menu::mdisplay(RenderWindow& window,Event event)
             medium.setclicked(true);
             hard.setclicked(true);
             bcd = false;
+            DifficultyIndex = 1;
         }
         medium.bdisplay(Color::Yellow,Color::Black,window,10,"MEDIUM");
         if (medium.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && bcd)
@@ -94,6 +96,7 @@ bool Main_menu::mdisplay(RenderWindow& window,Event event)
             easy.setclicked(true);
             hard.setclicked(true);
             bcd = false;
+            DifficultyIndex = 2;
         }
         hard.bdisplay(Color::Yellow,Color::Black,window,10,"HARD");
         if (hard.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && bcd)
@@ -102,6 +105,7 @@ bool Main_menu::mdisplay(RenderWindow& window,Event event)
             medium.setclicked(true);
             easy.setclicked(true);
             bcd = false;
+            DifficultyIndex = 3;
         }
         if (option_exit_button.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
         {

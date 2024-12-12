@@ -6,7 +6,19 @@
 #include "Player.h"
 
 using namespace sf;
-
+void Player::SetDifficulty(int DifficultyIndex) {
+	switch (DifficultyIndex) {
+	case1:
+		Life = 5;
+		break;
+	case 2:
+		Life = 3;
+		break;
+	case 3:
+		Life = 1;
+		break;
+	}
+}
 
 void Player::InitializePlayer() {
 	

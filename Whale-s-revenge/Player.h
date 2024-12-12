@@ -27,4 +27,5 @@ public:
 	void CreateWave();
 	void DeleteWave();
 	void TakeDamage();
+	void SetDifficulty(int DifficultyIndex);
 };

@@ -21,6 +21,7 @@ public:
 		
 	};
 
+	int projectileSpeed;
 	std::vector<SharkEnnemy> sharks;
 	std::vector<sf::Vector2f> pojectileAngle;
 
@@ -39,12 +40,16 @@ public:
 	void DeleteAll();
 
 	void DeleteATK(size_t index);
+
+	void SetDifficulty(int DifficultyIndex);
 };
 
 class Boat {
 public:
 
 	int ATKRadius = 50;
+	int BoatLife = 5;
+	int BoatATKLife = 10;
 
 	struct BoatEnnemy {
 		sf::RectangleShape boatshape;
@@ -73,6 +78,7 @@ public:
 	void DrawBoat(sf::RenderWindow& window);
 	void MoveBoat();
 	void BoatATK();
-	void BoatTakeDamage();
+	void BoatTakeDamage(int PlayerDamage);
 	void BiggerATK(size_t index);
+	void BoatATKTakeDamage(int PlayerDamage);
 };

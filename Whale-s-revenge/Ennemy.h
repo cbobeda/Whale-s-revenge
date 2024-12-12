@@ -14,9 +14,10 @@ public:
 	bool isRanged;
 
 	Shark(const sf::Vector2f& size, const sf::Vector2f& position,int initialLife, bool ranged): life(initialLife), isRanged(ranged) {
-		shape.setScale(size);
-		rect.setSize(sf::Vector2f(150,150));
+		rect.setSize(sf::Vector2f(130,130));
 		rect.setFillColor(sf::Color::White);
+		rect.setPosition(position);
+		shape.setScale(size);
 		shape.setPosition(position);
 	}
 		

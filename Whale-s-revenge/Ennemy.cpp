@@ -24,7 +24,6 @@ void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
 
     void Shark::moveAll(Vector2f playerpos) {
         for (auto& shark : sharksvect) {
-            rect.setPosition(shape.getPosition());
             if (!shark.isRanged) {
                 shark.shape.move(-5, 0);
             }

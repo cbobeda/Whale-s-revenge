@@ -136,7 +136,7 @@ void main()
 
         for (size_t i = 0; i < player.timers1.size(); i++) {
             if (player.timers1[i].getElapsedTime().asSeconds() > 2) {
-                player.DeleteBulles();
+                //player.DeleteBulles();
             }
         }
         for (size_t i = 0; i < player.timers2.size(); i++) {
@@ -148,10 +148,12 @@ void main()
         
         for (size_t i = 0; i < player.bulles.size(); ++i) {
             for (size_t j = 0; j < sharksvect.size(); ++j) {
+                std::cout << sharksvect[j].shape.getGlobalBounds().getPosition().x << std::endl;
                 if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     player.DeleteBulles();
-                    sharks.takeDamage(j, player.PlayerDamage);
-                    if (sharks.takeDamage(j, player.PlayerDamage)) {
+                    std::cout << "test " << sharksvect[j].life << std::endl;
+                    sharksvect[j].takeDamage(j, player.PlayerDamage);
+                    if (sharksvect[j].takeDamage(j, player.PlayerDamage)) {
                         player.MetalScrap += 10;
                     }
                     i--;
@@ -162,7 +164,7 @@ void main()
 
         for (size_t i = 0; i < player.wave.size(); ++i) {
             for (size_t j = 0; j < sharksvect.size(); ++j) {
-                if (player.wave[i].getGlobalBounds().intersects(sharksvect[j].shape.getGlobalBounds())) {
+                if (player.wave[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     sharks.takeDamage(j, player.PlayerDamage);
                     if (sharks.takeDamage(j, player.PlayerDamage)) {
                         player.MetalScrap += 10;
@@ -175,7 +177,7 @@ void main()
 
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
             if (sharks.ennemyATK[i]->shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
-                cerr << "DEGATS PRIT" << endl;
+                //cerr << "DEGATS PRIT" << endl;
                 sharks.DeleteATK(i);
                 player.TakeDamage();
                 break;
@@ -183,9 +185,9 @@ void main()
         }
 
         for (size_t i = 0; i < sharksvect.size(); i++) {
-            if (sharksvect[i].shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+            if (sharksvect[i].rect.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
                 player.TakeDamage();
-                cerr << "Degat prit du requin" << endl;
+                //cerr << "Degat prit du requin" << endl;
                 break;
             }
         }
@@ -241,20 +243,20 @@ void main()
         }
         
         if (createShark) {
-            cerr << WaveIndex << endl;
+            //r << WaveIndex << endl;
             if (sharksvect.size() == 0) {
                 switch (WaveIndex) {
                 case 1 :
                     sharks.CreateShark(4, 6);
-                    cerr << "Vague 1" << endl;
+                    //cerr << "Vague 1" << endl;
                     break;
                 case 2:
                     sharks.CreateShark(9, 12);
-                    cerr << "Vague 2" << endl;
+                    //cerr << "Vague 2" << endl;
                     break;
                 case 3:
                     sharks.CreateShark(20, 15);
-                    cerr << "Vague 3" << endl;
+                    //r << "Vague 3" << endl;
                     break;
                 }
                 WaveIndex++;
@@ -262,11 +264,11 @@ void main()
         }
 
 #pragma region Requins
-        for (auto shark : sharksvect)
+        for (auto& shark : sharksvect)
         {
             shark.shape.setTexture(requin_texture);
+            shark.rect.setPosition(shark.shape.getPosition().x,shark.shape.getPosition().y);
             window.draw(shark.shape);
-            window.draw(shark.rect);
         }
         boats.DrawBoat(window);
 
@@ -289,7 +291,7 @@ void main()
                 boats.boatATK[i].move(0, 5);
             }
             else if (boats.boatATK[i].getPosition().y >= 1000) {
-                boats.BiggerATK(i);
+                //boats.BiggerATK(i);
             }
         }
 #pragma endregion Requins

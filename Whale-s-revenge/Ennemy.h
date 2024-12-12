@@ -7,22 +7,20 @@
 class Shark {
 public:
 	std::vector<bullet*> ennemyATK;
-	
-	struct SharkEnnemy {
-		sf::RectangleShape shape;
-		int life;
-		bool isRanged;
+	sf::Texture requin_texture;
+	sf::Sprite shape;
+	sf::RectangleShape rect;
+	int life;
+	bool isRanged;
 
-		SharkEnnemy(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int initialLife, bool ranged): life(initialLife), isRanged(ranged) {
-			shape.setSize(size);
-			shape.setFillColor(color);
-			shape.setPosition(position);
-		}
+	Shark(const sf::Vector2f& size, const sf::Vector2f& position,int initialLife, bool ranged): life(initialLife), isRanged(ranged) {
+		shape.setScale(size);
+		rect.setSize(sf::Vector2f(150,150));
+		rect.setFillColor(sf::Color::White);
+		shape.setPosition(position);
+	}
 		
-	};
-
-	std::vector<SharkEnnemy> sharks;
-	std::vector<sf::Vector2f> pojectileAngle;
+	
 
 	sf::Clock EnnemyATKCD;
 

@@ -79,8 +79,8 @@ void Shark::DeleteAll() {
         ennemyATK.clear();
 }
 
-void Shark::DeleteATK() {
-    ennemyATK.erase(ennemyATK.begin());
+void Shark::DeleteATK(size_t index) {
+    ennemyATK.erase(ennemyATK.begin() + index);
 }
 
 #pragma endregion ClassRequin
@@ -97,7 +97,7 @@ void Boat::CreateBoats(int BoatNumber) {
 }
 
 void Boat::DrawBoat(sf::RenderWindow& window) {
-    for (const auto& boat : boats) {
+    for (auto& boat : boats) {
         window.draw(boat.boatshape);
     }
 }
@@ -109,9 +109,37 @@ void Boat::MoveBoat() {
 }
 
 void Boat::BoatATK() {
+    for (size_t i = 0; i < boats.size(); i++) {
+        auto& boat = boats[i];
 
+        if (!boat.hasAttacked && boat.boatshape.getPosition().x < 1900 && boat.boatshape.getPosition().x > 0) {
+            if (boat.attackTimer.getElapsedTime().asMilliseconds() >= boat.attackDelay) {
+                boatATK.push_back(CircleShape());
+                boatATK.back().setFillColor(Color(161,229,54));
+                boatATK.back().setPosition(boat.boatshape.getPosition());
+                boatATK.back().setRadius(ATKRadius);
+                boatATK.back().setOrigin(ATKRadius, ATKRadius);
+
+                boat.hasAttacked = true;
+            }
+        }
+    }
 }
+
+void Boat::BiggerATK(size_t index) {
+    for (size_t i = 0; i < boatATK.size(); i++) {
+        if (BiggerATKCD.getElapsedTime().asSeconds() > 0.1) {
+            ATKRadius += 5;
+            boatATK[index].setRadius(ATKRadius);
+            boatATK[index].setOrigin(ATKRadius, ATKRadius);
+            BiggerATKCD.restart();
+        }
+
+    }
+}
+
 void Boat::BoatTakeDamage() {
 
 }
+
 #pragma endregion ClassBateau

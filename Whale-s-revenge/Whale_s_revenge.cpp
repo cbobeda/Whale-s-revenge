@@ -18,6 +18,7 @@ Boat boats;
 
 bool createShark = false;
 bool isDead = false;
+bool isUpgrading = false;
 
 int WaveIndex = 0;
 
@@ -92,12 +93,18 @@ void main()
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
                 sharks.CreateShark(2, 5);
-                boats.CreateBoats(3);
-                cerr << "Vague 0" << endl;
+                boats.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
             }
         }
+
+        if (WaveIndex == 4) {
+            if (Keyboard::isKeyPressed(Keyboard::U)) {
+                isUpgrading = true;
+            }
+        }
+
         if (watchanime.getElapsedTime().asSeconds() > frameDurationanime) {
             IntRect newRect = player.PlayerSprite.getTextureRect();
             newRect.left += 64;
@@ -107,7 +114,7 @@ void main()
         }
         
 #pragma region Tire Principale & Secondaire
-        if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.2) {
+        if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.4) {
             player.CreateBulles();
             player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
             clock.restart();
@@ -119,8 +126,7 @@ void main()
                 player.CreateWave();
                 player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
                 CDCompetence.restart();
-            }
-            
+            }            
         }
 
         for (size_t i = 0; i < player.timers1.size(); i++) {
@@ -161,6 +167,24 @@ void main()
                 }
             }
         }
+
+        for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
+            if (sharks.ennemyATK[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+                cerr << "DEGATS PRIT" << endl;
+                sharks.DeleteATK(i);
+                player.TakeDamage();
+                break;
+            }
+        }
+
+        for (size_t i = 0; i < sharks.sharks.size(); i++) {
+            if (sharks.sharks[i].shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+                player.TakeDamage();
+                cerr << "Degat prit du requin" << endl;
+                break;
+            }
+        }
+
 
         while (window.pollEvent(event))
         {
@@ -237,7 +261,7 @@ void main()
         boats.DrawBoat(window);
 
         if (sharks.sharks.size() != 0) {
-            sharks.moveAll(player.PlayerSprite.getPosition());
+            sharks.moveAll();
             boats.MoveBoat();
         }
 
@@ -245,7 +269,19 @@ void main()
             window.draw(sharks.ennemyATK[i]->shape);
             sharks.ennemyATK[i]->update(5.0);
         }
-        
+        if (boats.boats.size() > 0) {
+            boats.BoatATK();
+        }
+
+        for (int i = 0; i < boats.boatATK.size(); i++) {
+            window.draw(boats.boatATK[i]);
+            if (boats.boatATK[i].getPosition().y <= 1000) {
+                boats.boatATK[i].move(0, 5);
+            }
+            else if (boats.boatATK[i].getPosition().y >= 1000) {
+                boats.BiggerATK(i);
+            }
+        }
 #pragma endregion Requins
 
         string MetalScrapString = to_string(player.MetalScrap);

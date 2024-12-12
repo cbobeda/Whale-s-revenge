@@ -55,7 +55,7 @@ void main()
     whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge");
     window.setFramerateLimit(60);
 
     Clock clock;
@@ -89,7 +89,7 @@ void main()
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
                 sharks.CreateShark(2, 5);
-                boats.CreateBoats(3);
+                boats.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
             }
@@ -172,6 +172,15 @@ void main()
                 break;
             }
         }
+
+        for (size_t i = 0; i < sharks.sharks.size(); i++) {
+            if (sharks.sharks[i].shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+                player.TakeDamage();
+                cerr << "Degat prit du requin" << endl;
+                break;
+            }
+        }
+
 
         while (window.pollEvent(event))
         {
@@ -256,21 +265,30 @@ void main()
         if (boats.boats.size() > 0) {
             boats.BoatATK();
         }
+
+        for (int i = 0; i < boats.boatATK.size(); i++) {
+            window.draw(boats.boatATK[i]);
+            if (boats.boatATK[i].getPosition().y <= 1000) {
+                boats.boatATK[i].move(0, 5);
+            }
+            else if (boats.boatATK[i].getPosition().y >= 1000) {
+                boats.BiggerATK(i);
+            }
+        }
 #pragma endregion Requins
 
         string MetalScrapString = to_string(player.MetalScrap);
         ArgentTemp.setString(MetalScrapString);
-
-        
+       
         window.display();
         
-       if (!isDead) {
+       /*if (!isDead) {
             if (player.Life <= 0) {
                 isDead = true;
                 m.actmenu();
                 sharks.DeleteAll();
                 player.MetalScrap = 0;
             }
-        }
+        }*/
     }
 }

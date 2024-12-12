@@ -46,9 +46,11 @@ void Player::CreateBulles() {
 }
 
 void Player::DeleteBulles() {
+	std::cout << "delete proj" << std::endl;
 	bulles.erase(bulles.begin());
 	angles.erase(angles.begin());
 	timers1.erase(timers1.begin());
+	std::cout << "delete proj fini" << std::endl;
 }
 
 void Player::CreateWave() {

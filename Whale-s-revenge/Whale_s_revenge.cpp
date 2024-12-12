@@ -13,7 +13,8 @@ using namespace sf;
 using namespace std;
 
 Player player;
-Shark sharks;
+vector<Shark> sharksvect;
+Shark sharks(sf::Vector2f(5, 5),sf::Vector2f(rand() % 2200 + 2000, rand() % 600 + 300),0, false);
 Boat boats;
 
 bool createShark = false;
@@ -22,8 +23,11 @@ bool isUpgrading = false;
 
 int WaveIndex = 0;
 
+
+
 Texture backgroundTexture;
 Texture waveTexture;
+Texture requin_texture;
 IntRect whaleRect;
 Clock watchanime;
 float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
@@ -45,6 +49,7 @@ void main()
     backgroundTexture.loadFromFile("sky.png");
     backgroundTexture.setRepeated(true);
     waveTexture.loadFromFile("vagues.png");
+    requin_texture.loadFromFile("shark1.png");
     Sprite skySprite;
     Sprite skySprite2;
     Sprite waveSprite;
@@ -131,7 +136,7 @@ void main()
 
         for (size_t i = 0; i < player.timers1.size(); i++) {
             if (player.timers1[i].getElapsedTime().asSeconds() > 2) {
-                player.DeleteBulles();
+                //player.DeleteBulles();
             }
         }
         for (size_t i = 0; i < player.timers2.size(); i++) {
@@ -142,11 +147,13 @@ void main()
 #pragma endregion Tire Principale & Secondaire
         
         for (size_t i = 0; i < player.bulles.size(); ++i) {
-            for (size_t j = 0; j < sharks.sharks.size(); ++j) {
-                if (player.bulles[i].getGlobalBounds().intersects(sharks.sharks[j].shape.getGlobalBounds())) {
+            for (size_t j = 0; j < sharksvect.size(); ++j) {
+                std::cout << sharksvect[j].shape.getGlobalBounds().getPosition().x << std::endl;
+                if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     player.DeleteBulles();
-                    sharks.takeDamage(j, player.PlayerDamage);
-                    if (sharks.takeDamage(j, player.PlayerDamage)) {
+                    std::cout << "test " << sharksvect[j].life << std::endl;
+                    sharksvect[j].takeDamage(j, player.PlayerDamage);
+                    if (sharksvect[j].takeDamage(j, player.PlayerDamage)) {
                         player.MetalScrap += 10;
                     }
                     i--;
@@ -156,8 +163,8 @@ void main()
         }
 
         for (size_t i = 0; i < player.wave.size(); ++i) {
-            for (size_t j = 0; j < sharks.sharks.size(); ++j) {
-                if (player.wave[i].getGlobalBounds().intersects(sharks.sharks[j].shape.getGlobalBounds())) {
+            for (size_t j = 0; j < sharksvect.size(); ++j) {
+                if (player.wave[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     sharks.takeDamage(j, player.PlayerDamage);
                     if (sharks.takeDamage(j, player.PlayerDamage)) {
                         player.MetalScrap += 10;
@@ -170,17 +177,17 @@ void main()
 
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
             if (sharks.ennemyATK[i]->shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
-                cerr << "DEGATS PRIT" << endl;
+                //cerr << "DEGATS PRIT" << endl;
                 sharks.DeleteATK(i);
                 player.TakeDamage();
                 break;
             }
         }
 
-        for (size_t i = 0; i < sharks.sharks.size(); i++) {
-            if (sharks.sharks[i].shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
+        for (size_t i = 0; i < sharksvect.size(); i++) {
+            if (sharksvect[i].rect.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
                 player.TakeDamage();
-                cerr << "Degat prit du requin" << endl;
+                //cerr << "Degat prit du requin" << endl;
                 break;
             }
         }
@@ -236,20 +243,20 @@ void main()
         }
         
         if (createShark) {
-            cerr << WaveIndex << endl;
-            if (sharks.sharks.size() == 0) {
+            //r << WaveIndex << endl;
+            if (sharksvect.size() == 0) {
                 switch (WaveIndex) {
                 case 1 :
                     sharks.CreateShark(4, 6);
-                    cerr << "Vague 1" << endl;
+                    //cerr << "Vague 1" << endl;
                     break;
                 case 2:
                     sharks.CreateShark(9, 12);
-                    cerr << "Vague 2" << endl;
+                    //cerr << "Vague 2" << endl;
                     break;
                 case 3:
                     sharks.CreateShark(20, 15);
-                    cerr << "Vague 3" << endl;
+                    //r << "Vague 3" << endl;
                     break;
                 }
                 WaveIndex++;
@@ -257,10 +264,15 @@ void main()
         }
 
 #pragma region Requins
-        sharks.draw(window);
+        for (auto& shark : sharksvect)
+        {
+            shark.shape.setTexture(requin_texture);
+            shark.rect.setPosition(shark.shape.getPosition().x,shark.shape.getPosition().y);
+            window.draw(shark.shape);
+        }
         boats.DrawBoat(window);
 
-        if (sharks.sharks.size() != 0) {
+        if (sharksvect.size() != 0) {
             sharks.moveAll(player.PlayerSprite.getPosition());
             boats.MoveBoat();
         }
@@ -279,7 +291,7 @@ void main()
                 boats.boatATK[i].move(0, 5);
             }
             else if (boats.boatATK[i].getPosition().y >= 1000) {
-                boats.BiggerATK(i);
+                //boats.BiggerATK(i);
             }
         }
 #pragma endregion Requins

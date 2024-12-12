@@ -2,9 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <math.h>
+#include <cmath>
 #include "Main menu.h"
 #include "Player.h"
 #include "Ennemy.h"
+#include "bullet.h"
 #include <string>
 
 using namespace sf;
@@ -33,6 +35,8 @@ public:
 
     // Autres attributs et méthodes...
 };
+
+
 
 void main()
 {
@@ -158,14 +162,6 @@ void main()
             }
         }
 
-        for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
-            if (sharks.ennemyATK[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
-                cerr << "DEGATS PRIT" << endl;
-                sharks.DeleteATK();
-                player.TakeDamage(); // A revoir plus tard
-            }
-        }
-
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed)
@@ -241,15 +237,15 @@ void main()
         boats.DrawBoat(window);
 
         if (sharks.sharks.size() != 0) {
-            sharks.moveAll();
+            sharks.moveAll(player.PlayerSprite.getPosition());
             boats.MoveBoat();
         }
 
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
-            window.draw(sharks.ennemyATK[i]);
-            sharks.pojectileAngle.push_back(player.PlayerSprite.getPosition().y - sharks.sharks[i].shape.getPosition().y);
-            sharks.ennemyATK[i].move(-10,(sharks.pojectileAngle[i]));
+            window.draw(sharks.ennemyATK[i]->shape);
+            sharks.ennemyATK[i]->update(5.0);
         }
+        
 #pragma endregion Requins
 
         string MetalScrapString = to_string(player.MetalScrap);

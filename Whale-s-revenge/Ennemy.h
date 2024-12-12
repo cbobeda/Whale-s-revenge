@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "Player.h"
+#include "bullet.h"
 
 class Shark {
 public:
-
-	std::vector<sf::CircleShape> ennemyATK;
-
+	std::vector<bullet*> ennemyATK;
+	
 	struct SharkEnnemy {
 		sf::RectangleShape shape;
 		int life;
@@ -17,9 +18,10 @@ public:
 			shape.setFillColor(color);
 			shape.setPosition(position);
 		}
+		
 	};
 	std::vector<SharkEnnemy> sharks;
-	std::vector<float> pojectileAngle;
+	std::vector<sf::Vector2f> pojectileAngle;
 
 	sf::Clock EnnemyATKCD;
 
@@ -27,11 +29,11 @@ public:
 
 	void draw(sf::RenderWindow& window);
 
-	void moveAll();
+	void moveAll(sf::Vector2f playerpos);
 
 	bool takeDamage(size_t sharkIndex,int damage);
 
-	void SharkATK();
+	void SharkATK(sf::Vector2f playerpos);
 
 	void DeleteAll();
 

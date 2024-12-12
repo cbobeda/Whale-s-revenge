@@ -6,7 +6,6 @@
 #include <cstdlib>
 
 using namespace sf;
-
 #pragma region ClassRequin
 void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
     const int meleeLife = 4;
@@ -18,7 +17,9 @@ void Shark::CreateShark(int MeleeSharks, int DistanceSharks) {
 
     for (int j = 0; j < DistanceSharks; j++) {
         sharks.emplace_back(sf::Vector2f(150, 75),sf::Color::Green,sf::Vector2f(rand() % 2500 + 2000, rand() % 600 + 300), distanceLife, true);
+        
     }
+    for (int o = 0; o < 100; o++) {pojectileAngle.push_back(sf::Vector2f(0, 0));}
 }
 
 void Shark::draw(sf::RenderWindow& window) {
@@ -27,7 +28,7 @@ void Shark::draw(sf::RenderWindow& window) {
 	}
 }
 
-    void Shark::moveAll() {
+    void Shark::moveAll(Vector2f playerpos) {
         for (auto& shark : sharks) {
             if (!shark.isRanged) {
                 shark.shape.move(-5, 0);
@@ -38,7 +39,7 @@ void Shark::draw(sf::RenderWindow& window) {
                 }
                 else {
                     if (EnnemyATKCD.getElapsedTime().asSeconds() > 1) {
-                        SharkATK();
+                        SharkATK(playerpos);
                         EnnemyATKCD.restart();
                     }                  
                 }               
@@ -58,17 +59,17 @@ bool Shark::takeDamage(size_t sharkIndex, int damage) {
     return false;
 }
 
-void Shark::SharkATK() {
-    for (auto& shark : sharks) {
-        if (shark.isRanged) {
-            ennemyATK.push_back(CircleShape());
-            ennemyATK.back().setRadius(10);
-            ennemyATK.back().setOrigin(10, 10);
-            ennemyATK.back().setFillColor(Color::Yellow);
-            ennemyATK.back().setPosition(shark.shape.getPosition());
-
-
-
+void Shark::SharkATK(Vector2f playerpos) {
+    for (int i = 0 ; i < sharks.size(); i++) {
+        if (sharks[i].isRanged) {
+            ennemyATK.push_back(new bullet(playerpos,sharks[i].shape.getPosition()));
+            for (auto& projectile : ennemyATK)
+            {
+                if (projectile->shape.getPosition().x == 0 && projectile->shape.getPosition().y == 0)
+                {
+                    projectile->init(sharks[i].shape.getPosition().x,sharks[i].shape.getPosition().y);
+                }
+            }
         }
     }
 }

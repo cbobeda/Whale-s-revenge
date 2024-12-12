@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="Ennemy.cpp" />
     <ClCompile Include="Main menu.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Whale_s_revenge.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="Ennemy.h" />
     <ClInclude Include="Main menu.h" />

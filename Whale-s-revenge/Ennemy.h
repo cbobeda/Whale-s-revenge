@@ -12,6 +12,7 @@ public:
 	sf::RectangleShape rect;
 	int life;
 	bool isRanged;
+	int ProjectileSpeed = 20;
 
 	Shark(const sf::Vector2f& size, const sf::Vector2f& position,int initialLife, bool ranged): life(initialLife), isRanged(ranged) {
 		rect.setSize(sf::Vector2f(130,130));
@@ -26,8 +27,6 @@ public:
 	sf::Clock EnnemyATKCD;
 
 	void CreateShark(int MeleeSharks, int DistanceSharks);
-
-	void draw(sf::RenderWindow& window);
 
 	void moveAll(sf::Vector2f playerpos);
 
@@ -44,39 +43,33 @@ public:
 
 class Boat {
 public:
+    int ATKRadius = 50;
+    int BoatLife = 5;
+    int BoatATKLife = 10;
+    sf::RectangleShape boatshape;
+    int life;
+    float Speed = -8;
+    bool hasAttacked;
+    int attackDelay;
+    sf::Clock attackTimer;
 
-	int ATKRadius = 50;
-	int BoatLife = 5;
-	int BoatATKLife = 10;
+    std::vector<sf::CircleShape> boatATK;  
+    sf::Clock BoatsATK;
+    sf::Clock BiggerATKCD; 
 
-	struct BoatEnnemy {
-		sf::RectangleShape boatshape;
-		int life;
-		float Speed;
-		bool hasAttacked;
-		int attackDelay;
-		sf::Clock attackTimer;
+    Boat(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int Life, float Speed)
+        : life(Life), Speed(Speed), hasAttacked(false) {
+        boatshape.setSize(size);
+        boatshape.setFillColor(color);
+        boatshape.setPosition(position);
+        attackDelay = (rand() % 10 + 1) * 1000;  
+    }
 
-		BoatEnnemy(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int Life, float Speed): life(Life), Speed(Speed), hasAttacked(false) {
-			boatshape.setSize(size);
-			boatshape.setFillColor(color);
-			boatshape.setPosition(position);
+    void CreateBoats(int BoatNumber); 
+    void MoveBoat();  
+    void BoatATK();  
+    void BiggerATK(size_t index); 
+    void BoatTakeDamage(int PlayerDamage); 
+    void BoatATKTakeDamage(int PlayerDamage);
 
-			attackDelay = (rand() % 10 + 1) * 1000;
-		}
-	};
-
-	std::vector<BoatEnnemy> boats;
-	std::vector<sf::CircleShape> boatATK;
-	
-	sf::Clock BoatsATK;
-	sf::Clock BiggerATKCD;
-
-	void CreateBoats(int BoatNumber);
-	void DrawBoat(sf::RenderWindow& window);
-	void MoveBoat();
-	void BoatATK();
-	void BoatTakeDamage(int PlayerDamage);
-	void BiggerATK(size_t index);
-	void BoatATKTakeDamage(int PlayerDamage);
 };

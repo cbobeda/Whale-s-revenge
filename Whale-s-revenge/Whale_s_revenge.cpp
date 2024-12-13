@@ -8,6 +8,7 @@
 #include "Ennemy.h"
 #include "bullet.h"
 #include <string>
+#include "SkillTree.h"
 
 using namespace sf;
 using namespace std;
@@ -19,9 +20,12 @@ Shark sharks(sf::Vector2f(5, 5),sf::Vector2f(rand() % 2200 + 2000, rand() % 600 
 vector<Boat> boatvect;
 Boat boat(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(500, 300), 5, -8);
 
+SkillMenu sMenu;
+
 bool createShark = false;
 bool isDead = false;
-bool isUpgrading = false;
+
+Clock SkillMDelay;
 
 int WaveIndex = 0;
 
@@ -76,6 +80,10 @@ void main()
     Font font;
     font.loadFromFile("font/MinecraftStandard.otf");
 
+    RectangleShape BlackBackground(Vector2f(2000, 2000));
+    BlackBackground.setFillColor(Color::Black);
+    BlackBackground.setPosition(0, 0);
+
     Text ArgentTemp(MetalScrapString,font,50);
     ArgentTemp.setPosition(50, 50);
     
@@ -83,8 +91,7 @@ void main()
     {
         Event event;
 
-        sharks.SetDifficulty(m.DifficultyIndex);
-        player.SetDifficulty(m.DifficultyIndex);
+        
         
         if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
             player.PlayerSprite.move(player.Speed, 0);
@@ -105,12 +112,6 @@ void main()
                 boat.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
-            }
-        }
-        
-        if (WaveIndex == 4) {
-            if (Keyboard::isKeyPressed(Keyboard::U)) {
-                isUpgrading = true;
             }
         }
 
@@ -221,7 +222,8 @@ void main()
         window.clear();
         if (m.mdisplay(window,event))
         {
-            
+            sharks.SetDifficulty(m.DifficultyIndex);
+            player.SetDifficulty(m.DifficultyIndex);
         }
         else
         {
@@ -230,7 +232,6 @@ void main()
             window.draw(waveSprite);
             window.draw(waveSprite2);
             window.draw(player.PlayerSprite);
-            window.draw(ArgentTemp);
             for (int i = 0; i < player.Life; i++)
             {
                 heartSprite.setPosition(100 * i, 100);
@@ -302,6 +303,22 @@ void main()
 
         string MetalScrapString = to_string(player.MetalScrap);
         ArgentTemp.setString(MetalScrapString);
+
+        if (WaveIndex >= 0) {
+            if (Keyboard::isKeyPressed(Keyboard::U)) {
+                if (SkillMDelay.getElapsedTime().asSeconds() > 2) {
+                    sMenu.switchUpgrading();
+                    SkillMDelay.restart();
+                }
+                
+            }
+        }
+
+        if (sMenu.isUpgrading) {
+            window.draw(BlackBackground);
+            sMenu.DisplaySkillMenu(window);
+        }
+        window.draw(ArgentTemp);
 
         window.display();
         

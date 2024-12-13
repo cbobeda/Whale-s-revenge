@@ -8,7 +8,7 @@
 using namespace sf;
 void Player::SetDifficulty(int DifficultyIndex) {
 	switch (DifficultyIndex) {
-	case1:
+	case 1:
 		Life = 5;
 		break;
 	case 2:

@@ -3,11 +3,13 @@
 using namespace sf;
 
 button BaseUpgrade(100, 500, 175, 175, false);
-button SecondaryUnlock(400, 500, 175, 175, false);
+button SecondaryUnlock(400, 500, 175, 175, true);
 button PrimaryMagic(900, 200, 175, 175, false);
 button SecondaryMagic(1100, 200, 175, 175, false);
 button PrimaryTechno(900, 800, 175, 175, false);
 button SecondaryTechno(1100, 800, 175, 175, false);
+
+extern Player player;
 
 void SkillMenu::switchUpgrading() {
 	if (isUpgrading) {
@@ -29,6 +31,13 @@ void SkillMenu::DisplaySkillMenu(RenderWindow& window) {
 	}
 
 	if (SecondaryUnlock.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)){
-		std::cerr << "Test" << std::endl;
+		if (player.MetalScrap >= 100 && !SecondaryUnlocked) {
+			SecondaryIndex = 1;
+			player.MetalScrap -= 100;
+			SecondaryUnlocked = true;
+			SecondaryUnlock.setclicked();
+			player.Life += 1;
+			std::cerr << "Upgrade" << std::endl;
+		}
 	}
 }

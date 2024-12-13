@@ -1,9 +1,6 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <math.h>
-#include <string>
 #include "Player.h"
+
+extern SkillMenu sMenu;
 
 using namespace sf;
 void Player::SetDifficulty(int DifficultyIndex) {
@@ -26,7 +23,7 @@ void Player::InitializePlayer() {
 	whaleTexture.loadFromFile("assets/blue-whale.png");
 	PlayerSprite.setTexture(whaleTexture);
 	PlayerSprite.setTextureRect(sf::IntRect(0, 0, 64, 50));
-	PlayerSprite.setOrigin(25, 25);
+	PlayerSprite.setOrigin(60, 25);
 	PlayerSprite.setScale(3, 3);
 
 	Life = 5;

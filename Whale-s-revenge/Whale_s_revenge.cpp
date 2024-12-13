@@ -295,7 +295,7 @@ void main()
 
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
             window.draw(sharks.ennemyATK[i]->shape);
-            sharks.ennemyATK[i]->update(sharks.projectileSpeed);
+            sharks.ennemyATK[i]->update(sharks.ProjectileSpeed);
         }
         if (boatvect.size() > 0) {
             boat.BoatATK();

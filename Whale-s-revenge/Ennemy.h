@@ -21,7 +21,6 @@ public:
 		shape.setScale(size);
 		shape.setPosition(position);
 	}
-	int projectileSpeed = 20;	
 	
 
 	sf::Clock EnnemyATKCD;

@@ -54,6 +54,8 @@ void main()
     Sprite skySprite2;
     Sprite waveSprite;
     Sprite waveSprite2;
+    Sprite waveBackgroundSprite;
+    Sprite waveBackgroundSprite2;
     Sprite whaleSprite;
     Sprite heartSprite;
     skySprite.setTexture(backgroundTexture);
@@ -205,7 +207,8 @@ void main()
         {
             waveSprite.setPosition(waveSprite2.getPosition().x + waveTexture.getSize().x, 0);
         }
-        if (skySprite2.getPosition().x + backgroundTexture.getSize().x < 0) {
+        if (skySprite2.getPosition().x + backgroundTexture.getSize().x < 0)
+        {
             skySprite2.setPosition(skySprite.getPosition().x + backgroundTexture.getSize().x, 0);
         }
         if (waveSprite2.getPosition().x + waveTexture.getSize().x < 0)
@@ -217,6 +220,8 @@ void main()
         skySprite2.move(-5, 0);
         waveSprite.move(-10, 0);
         waveSprite2.move(-10, 0);
+        waveBackgroundSprite.move(-10, 0);
+        waveBackgroundSprite2.move(-10, 0);
         whaleSprite.setPosition(whaleSprite.getPosition().x + 64, 0);
         window.clear();
         if (m.mdisplay(window,event))
@@ -229,6 +234,8 @@ void main()
             window.draw(skySprite2);
             window.draw(waveSprite);
             window.draw(waveSprite2);
+            window.draw(waveBackgroundSprite);
+            window.draw(waveBackgroundSprite2);
             window.draw(player.PlayerSprite);
             window.draw(ArgentTemp);
             for (int i = 0; i < player.Life; i++)

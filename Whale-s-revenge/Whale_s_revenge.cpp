@@ -15,15 +15,15 @@ using namespace std;
 Player player;
 vector<Shark> sharksvect;
 Shark sharks(sf::Vector2f(5, 5),sf::Vector2f(rand() % 2200 + 2000, rand() % 600 + 300),0, false);
-Boat boats;
+
+vector<Boat> boatvect;
+Boat boats(sf::Vector2f(5, 5), sf::Color::Black, sf::Vector2f(5000, 5000), 4, 8);
 
 bool createShark = false;
 bool isDead = false;
 bool isUpgrading = false;
 
 int WaveIndex = 0;
-
-
 
 Texture backgroundTexture;
 Texture waveTexture;
@@ -40,8 +40,6 @@ public:
 
     // Autres attributs et méthodes...
 };
-
-
 
 void main()
 {
@@ -103,7 +101,7 @@ void main()
                 WaveIndex++;
             }
         }
-
+        
         if (WaveIndex == 4) {
             if (Keyboard::isKeyPressed(Keyboard::U)) {
                 isUpgrading = true;
@@ -136,7 +134,7 @@ void main()
 
         for (size_t i = 0; i < player.timers1.size(); i++) {
             if (player.timers1[i].getElapsedTime().asSeconds() > 2) {
-                //player.DeleteBulles();
+                player.DeleteBulles();
             }
         }
         for (size_t i = 0; i < player.timers2.size(); i++) {
@@ -148,10 +146,8 @@ void main()
         
         for (size_t i = 0; i < player.bulles.size(); ++i) {
             for (size_t j = 0; j < sharksvect.size(); ++j) {
-                std::cout << sharksvect[j].shape.getGlobalBounds().getPosition().x << std::endl;
                 if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     player.DeleteBulles();
-                    std::cout << "test " << sharksvect[j].life << std::endl;
                     sharksvect[j].takeDamage(j, player.PlayerDamage);
                     if (sharksvect[j].takeDamage(j, player.PlayerDamage)) {
                         player.MetalScrap += 10;
@@ -177,7 +173,6 @@ void main()
 
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
             if (sharks.ennemyATK[i]->shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
-                //cerr << "DEGATS PRIT" << endl;
                 sharks.DeleteATK(i);
                 player.TakeDamage();
                 break;
@@ -187,7 +182,6 @@ void main()
         for (size_t i = 0; i < sharksvect.size(); i++) {
             if (sharksvect[i].rect.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
                 player.TakeDamage();
-                //cerr << "Degat prit du requin" << endl;
                 break;
             }
         }
@@ -243,20 +237,16 @@ void main()
         }
         
         if (createShark) {
-            //r << WaveIndex << endl;
             if (sharksvect.size() == 0) {
                 switch (WaveIndex) {
                 case 1 :
                     sharks.CreateShark(4, 6);
-                    //cerr << "Vague 1" << endl;
                     break;
                 case 2:
                     sharks.CreateShark(9, 12);
-                    //cerr << "Vague 2" << endl;
                     break;
                 case 3:
                     sharks.CreateShark(20, 15);
-                    //r << "Vague 3" << endl;
                     break;
                 }
                 WaveIndex++;
@@ -270,7 +260,10 @@ void main()
             shark.rect.setPosition(shark.shape.getPosition().x,shark.shape.getPosition().y);
             window.draw(shark.shape);
         }
-        boats.DrawBoat(window);
+
+        for (auto& boats : boatvect) {
+            window.draw(boats.boatshape);
+        }
 
         if (sharksvect.size() != 0) {
             sharks.moveAll(player.PlayerSprite.getPosition());
@@ -291,7 +284,7 @@ void main()
                 boats.boatATK[i].move(0, 5);
             }
             else if (boats.boatATK[i].getPosition().y >= 1000) {
-                //boats.BiggerATK(i);
+                boats.BiggerATK(i);
             }
         }
 #pragma endregion Requins
@@ -299,7 +292,6 @@ void main()
         string MetalScrapString = to_string(player.MetalScrap);
         ArgentTemp.setString(MetalScrapString);
 
-        
         window.display();
         
        if (!isDead) {

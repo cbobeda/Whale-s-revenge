@@ -165,6 +165,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="Ennemy.cpp" />
+    <ClCompile Include="fish.cpp" />
     <ClCompile Include="Main menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SkillTree.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="Ennemy.h" />
+    <ClInclude Include="fish.h" />
     <ClInclude Include="Main menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SkillTree.h" />

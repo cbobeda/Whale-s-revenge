@@ -23,7 +23,7 @@ void Player::SetDifficulty(int DifficultyIndex) {
 void Player::InitializePlayer() {
 	
 	PlayerSprite.setPosition(100, 600);
-	whaleTexture.loadFromFile("blue-whale.png");
+	whaleTexture.loadFromFile("assets/blue-whale.png");
 	PlayerSprite.setTexture(whaleTexture);
 	PlayerSprite.setTextureRect(sf::IntRect(0, 0, 64, 50));
 	PlayerSprite.setOrigin(25, 25);

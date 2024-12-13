@@ -27,7 +27,8 @@ int WaveIndex = 0;
 
 Texture backgroundTexture;
 Texture waveTexture;
-Texture requin_texture;
+Texture requinTexture;
+Texture hearTexture;
 IntRect whaleRect;
 Clock watchanime;
 float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
@@ -46,19 +47,22 @@ public:
 void main()
 {
     string MetalScrapString = to_string(player.MetalScrap);
-    backgroundTexture.loadFromFile("sky.png");
+    backgroundTexture.loadFromFile("assets/sky.png");
     backgroundTexture.setRepeated(true);
-    waveTexture.loadFromFile("vagues.png");
-    requin_texture.loadFromFile("shark1.png");
+    waveTexture.loadFromFile("assets/vagues.png");
+    requinTexture.loadFromFile("assets/shark1.png");
+    hearTexture.loadFromFile("assets/heartDisplay.png");
     Sprite skySprite;
     Sprite skySprite2;
     Sprite waveSprite;
     Sprite waveSprite2;
     Sprite whaleSprite;
+    Sprite heartSprite;
     skySprite.setTexture(backgroundTexture);
     skySprite2.setTexture(backgroundTexture);
     waveSprite.setTexture(waveTexture);
     waveSprite2.setTexture(waveTexture);
+    heartSprite.setTexture(hearTexture);
     skySprite2.setPosition(backgroundTexture.getSize().x,0);
     waveSprite2.setPosition(waveTexture.getSize().x,0);
     whaleSprite.setTextureRect(whaleRect);
@@ -73,15 +77,18 @@ void main()
 
     // J'affiche pour voir si ca fonctionne pour le moment
     Font font;
-    font.loadFromFile("MinecraftStandard.otf");
+    font.loadFromFile("font/MinecraftStandard.otf");
 
     Text ArgentTemp(MetalScrapString,font,50);
     ArgentTemp.setPosition(50, 50);
-
+    
     while (window.isOpen())
     {
         Event event;
 
+        sharks.SetDifficulty(m.DifficultyIndex);
+        player.SetDifficulty(m.DifficultyIndex);
+        
         if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
             player.PlayerSprite.move(player.Speed, 0);
         }
@@ -131,12 +138,12 @@ void main()
                 player.CreateWave();
                 player.angles.push_back(atan2(Mouse::getPosition(window).y - player.PlayerSprite.getPosition().y, Mouse::getPosition(window).x - player.PlayerSprite.getPosition().x));
                 CDCompetence.restart();
-            }            
+            }
         }
 
         for (size_t i = 0; i < player.timers1.size(); i++) {
             if (player.timers1[i].getElapsedTime().asSeconds() > 2) {
-                //player.DeleteBulles();
+                player.DeleteBulles();
             }
         }
         for (size_t i = 0; i < player.timers2.size(); i++) {
@@ -231,7 +238,11 @@ void main()
             window.draw(waveSprite2);
             window.draw(player.PlayerSprite);
             window.draw(ArgentTemp);
-
+            for (int i = 0; i < player.Life; i++)
+            {
+                heartSprite.setPosition(100 * i, 100);
+                window.draw(heartSprite);
+            }
             for (int i = 0; i < player.bulles.size(); i++) {
                 window.draw(player.bulles[i]);
                 player.bulles[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
@@ -262,11 +273,12 @@ void main()
                 WaveIndex++;
             }
         }
-
+        
+        
 #pragma region Requins
         for (auto& shark : sharksvect)
         {
-            shark.shape.setTexture(requin_texture);
+            shark.shape.setTexture(requinTexture);
             shark.rect.setPosition(shark.shape.getPosition().x,shark.shape.getPosition().y);
             window.draw(shark.shape);
         }
@@ -279,7 +291,7 @@ void main()
 
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
             window.draw(sharks.ennemyATK[i]->shape);
-            sharks.ennemyATK[i]->update(20.0);
+            sharks.ennemyATK[i]->update(sharks.projectileSpeed);
         }
         if (boats.boats.size() > 0) {
             boats.BoatATK();

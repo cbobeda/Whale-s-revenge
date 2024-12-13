@@ -36,7 +36,7 @@ void Main_menu::actmenu()
 bool Main_menu::mdisplay(RenderWindow& window,Event event)
 {
     Font font;
-    font.loadFromFile("MinecraftStandard.otf");
+    font.loadFromFile("font/MinecraftStandard.otf");
     Text text;
     text.setFont(font);
     text.setString("Whale's revenge");
@@ -64,12 +64,12 @@ bool Main_menu::mdisplay(RenderWindow& window,Event event)
     Texture background;
     if (frame)
     {
-        background.loadFromFile("menu1.png");
+        background.loadFromFile("assets/menu1.png");
 
     }
     else
     {
-        background.loadFromFile("menu2.png");
+        background.loadFromFile("assets/menu2.png");
 
     }
     Sprite background_sprite;

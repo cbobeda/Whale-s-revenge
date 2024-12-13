@@ -44,7 +44,7 @@ void button::bdisplay(sf::Color couleur, sf::Color couleur2,sf::RenderWindow& wi
     if (isText!="")
     {
         Font font;
-        font.loadFromFile("MinecraftStandard.otf");
+        font.loadFromFile("font/MinecraftStandard.otf");
         text.setFont(font);
         text.setString(isText);
         text.setCharacterSize(size);

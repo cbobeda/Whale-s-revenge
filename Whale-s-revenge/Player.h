@@ -1,6 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
+#include <math.h>
+#include <string>
+#include "SkillTree.h"
 
 class Player {
 public:

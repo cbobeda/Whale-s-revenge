@@ -117,6 +117,10 @@ void main()
             }
         }
 
+        if (Keyboard::isKeyPressed(Keyboard::W)) {
+            player.MetalScrap += 50;
+        }
+
         if (watchanime.getElapsedTime().asSeconds() > frameDurationanime) {
             IntRect newRect = player.PlayerSprite.getTextureRect();
             newRect.left += 64;
@@ -325,6 +329,7 @@ void main()
             window.draw(BlackBackground);
             sMenu.DisplaySkillMenu(window);
         }
+
         window.draw(ArgentTemp);
 
         window.display();

@@ -95,34 +95,34 @@ void Shark::DeleteATK(size_t index) {
 #pragma endregion ClassRequin
 
 #pragma region ClassBateau
-std::vector<Boat> Boat::boats;
+extern std::vector<Boat> boatvect;
 
 void Boat::CreateBoats(int BoatNumber) {
-    int BaseBoatSpawn = 2200;
+    int BaseBoatSpawn = 1500;
     for (int i = 0; i < BoatNumber; i++) {
-        BaseBoatSpawn += (rand() % 900) + 1000;
+        BaseBoatSpawn += (rand() % 900) + 1000; 
 
-        boats.emplace_back(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(BaseBoatSpawn, 400), 5, 10);
+        boatvect.emplace_back(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(BaseBoatSpawn, 400), 5, Speed);
     }
 }
 
 void Boat::MoveBoat() {
-    for (auto& boat : boats) {
-        boat.boatshape.move(-8, 0);
+    for (auto& boat : boatvect) {
+        boat.boatshape.move(Speed, 0);  
     }
 }
 
 void Boat::BoatATK() {
-    for (auto& boat : boats) {
+    for (auto& boat : boatvect) {
         if (!boat.hasAttacked && boat.boatshape.getPosition().x < 1900 && boat.boatshape.getPosition().x > 0) {
             if (boat.attackTimer.getElapsedTime().asMilliseconds() >= boat.attackDelay) {
                 boatATK.push_back(sf::CircleShape());
-                boatATK.back().setFillColor(sf::Color(161, 229, 54));
+                boatATK.back().setFillColor(sf::Color(161, 229, 54));  
                 boatATK.back().setPosition(boat.boatshape.getPosition());
                 boatATK.back().setRadius(ATKRadius);
-                boatATK.back().setOrigin(ATKRadius, ATKRadius);
+                boatATK.back().setOrigin(ATKRadius, ATKRadius); 
 
-                boat.hasAttacked = true;
+                boat.hasAttacked = true; 
             }
         }
     }

@@ -17,7 +17,7 @@ vector<Shark> sharksvect;
 Shark sharks(sf::Vector2f(5, 5),sf::Vector2f(rand() % 2200 + 2000, rand() % 600 + 300),0, false);
 
 vector<Boat> boatvect;
-Boat boats(sf::Vector2f(5, 5), sf::Color::Black, sf::Vector2f(5000, 5000), 4, 8);
+Boat boat(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(500, 300), 5, -8);
 
 bool createShark = false;
 bool isDead = false;
@@ -69,7 +69,6 @@ void main()
     Clock CDCompetence;
     Main_menu m(600,600);
 
-    // J'affiche pour voir si ca fonctionne pour le moment
     Font font;
     font.loadFromFile("MinecraftStandard.otf");
 
@@ -96,7 +95,7 @@ void main()
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
                 sharks.CreateShark(2, 5);
-                boats.CreateBoats(1);
+                boat.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
             }
@@ -267,24 +266,24 @@ void main()
 
         if (sharksvect.size() != 0) {
             sharks.moveAll(player.PlayerSprite.getPosition());
-            boats.MoveBoat();
+            boat.MoveBoat();
         }
 
         for (int i = 0; i < sharks.ennemyATK.size(); i++) {
             window.draw(sharks.ennemyATK[i]->shape);
             sharks.ennemyATK[i]->update(20.0);
         }
-        if (boats.boats.size() > 0) {
-            boats.BoatATK();
+        if (boatvect.size() > 0) {
+            boat.BoatATK();
         }
 
-        for (int i = 0; i < boats.boatATK.size(); i++) {
-            window.draw(boats.boatATK[i]);
-            if (boats.boatATK[i].getPosition().y <= 1000) {
-                boats.boatATK[i].move(0, 5);
+        for (int i = 0; i < boat.boatATK.size(); i++) {
+            window.draw(boat.boatATK[i]);
+            if (boat.boatATK[i].getPosition().y <= 1000) {
+                boat.boatATK[i].move(0, 5);
             }
-            else if (boats.boatATK[i].getPosition().y >= 1000) {
-                boats.BiggerATK(i);
+            else if (boat.boatATK[i].getPosition().y >= 1000) {
+                boat.BiggerATK(i);
             }
         }
 #pragma endregion Requins

@@ -167,6 +167,7 @@
     <ClCompile Include="Ennemy.cpp" />
     <ClCompile Include="Main menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SkillTree.cpp" />
     <ClCompile Include="Whale_s_revenge.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,12 +176,11 @@
     <ClInclude Include="Ennemy.h" />
     <ClInclude Include="Main menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SkillTree.h" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="menu1.png" />
-    <Content Include="menu2.png" />
-    <Content Include="MinecraftStandard.otf" />
     <Content Include="Whale-s-revenge.vcxproj.filters" />
+    <Content Include="Whale-s-revenge.vcxproj.user" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

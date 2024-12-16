@@ -15,20 +15,25 @@ using namespace std;
 
 Player player;
 vector<Shark> sharksvect;
-Shark sharks(sf::Vector2f(5, 5),sf::Vector2f(rand() % 2200 + 2000, rand() % 600 + 300),0, false);
+Shark sharks(sf::Vector2f(5, 5), sf::Vector2f(rand() % 2200 + 2000, rand() % 600 + 300), 0, false);
 
 vector<Boat> boatvect;
 Boat boat(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(500, 300), 5, -8);
+Boss boss;
 
+MenuIndex menuindex;
 SkillMenu sMenu;
 
 bool createShark = false;
 bool isDead = false;
 
 Clock SkillMDelay;
-
 int WaveIndex = 0;
 
+//A supprimé plus tard
+Clock NDelay;
+bool BossCreated = false;
+//
 Texture backgroundTexture;
 Texture waveTexture;
 Texture requinTexture;
@@ -67,17 +72,17 @@ void main()
     waveSprite.setTexture(waveTexture);
     waveSprite2.setTexture(waveTexture);
     heartSprite.setTexture(hearTexture);
-    skySprite2.setPosition(backgroundTexture.getSize().x,0);
-    waveSprite2.setPosition(waveTexture.getSize().x,0);
+    skySprite2.setPosition(backgroundTexture.getSize().x, 0);
+    waveSprite2.setPosition(waveTexture.getSize().x, 0);
     whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge", Style::Fullscreen);
     window.setFramerateLimit(60);
 
     Clock clock;
     Clock CDCompetence;
-    Main_menu m(600,600);
+    Main_menu m(600, 600);
 
     Font font;
     font.loadFromFile("font/MinecraftStandard.otf");
@@ -86,15 +91,15 @@ void main()
     BlackBackground.setFillColor(Color::Black);
     BlackBackground.setPosition(0, 0);
 
-    Text ArgentTemp(MetalScrapString,font,50);
+    Text ArgentTemp(MetalScrapString, font, 50);
     ArgentTemp.setPosition(50, 50);
-    
+
     while (window.isOpen())
     {
         Event event;
 
-        
-        
+
+
         if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
             player.PlayerSprite.move(player.Speed, 0);
         }
@@ -110,11 +115,24 @@ void main()
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
-                sharks.CreateShark(2, 5);
-                boat.CreateBoats(1);
+                sharks.CreateShark(2, 5, 5, 4);
+                //boat.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
             }
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::B)) {
+            boss.CreateSharkBoss();
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::N)) {
+            if(NDelay.getElapsedTime().asSeconds() > 2){
+                boss.SpecialBossATK();
+                NDelay.restart();
+                boss.isSpecialATK = true;
+            }
+
         }
 
         if (Keyboard::isKeyPressed(Keyboard::W)) {
@@ -124,11 +142,11 @@ void main()
         if (watchanime.getElapsedTime().asSeconds() > frameDurationanime) {
             IntRect newRect = player.PlayerSprite.getTextureRect();
             newRect.left += 64;
-            if (newRect.left >= 640) {newRect.left -= 640;}
+            if (newRect.left >= 640) { newRect.left -= 640; }
             player.PlayerSprite.setTextureRect(newRect);
             watchanime.restart();
         }
-        
+
 #pragma region Tire Principale & Secondaire
         if (Mouse::isButtonPressed(Mouse::Left) && clock.getElapsedTime().asSeconds() > 0.4) {
             player.CreateBulles();
@@ -156,7 +174,7 @@ void main()
             }
         }
 #pragma endregion Tire Principale & Secondaire
-        
+
         for (size_t i = 0; i < player.bulles.size(); ++i) {
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
@@ -220,8 +238,8 @@ void main()
         {
             waveSprite2.setPosition(waveSprite.getPosition().x + waveTexture.getSize().x, 0);
         }
-        
-        skySprite.move(- 5, 0);
+
+        skySprite.move(-5, 0);
         skySprite2.move(-5, 0);
         waveSprite.move(-10, 0);
         waveSprite2.move(-10, 0);
@@ -229,8 +247,9 @@ void main()
         waveBackgroundSprite2.move(-10, 0);
         whaleSprite.setPosition(whaleSprite.getPosition().x + 64, 0);
         window.clear();
-        if (m.mdisplay(window,event))
+        if (m.mdisplay(window, event))
         {
+            if (true)window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
             sharks.SetDifficulty(m.DifficultyIndex);
             player.SetDifficulty(m.DifficultyIndex);
         }
@@ -243,6 +262,7 @@ void main()
             window.draw(waveBackgroundSprite);
             window.draw(waveBackgroundSprite2);
             window.draw(player.PlayerSprite);
+            window.draw(boss.RequinBossShape);
             for (int i = 0; i < player.Life; i++)
             {
                 heartSprite.setPosition(100 * i, 100);
@@ -250,37 +270,38 @@ void main()
             }
             for (int i = 0; i < player.bulles.size(); i++) {
                 window.draw(player.bulles[i]);
-                player.bulles[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
+                player.bulles[i].move(20 * cos(player.angles[i]), 15 * sin(player.angles[i]));
             }
             for (int i = 0; i < player.wave.size(); i++) {
                 window.draw(player.wave[i]);
-                player.wave[i].move(15 * cos(player.angles[i]), 15 * sin(player.angles[i]));
+                player.wave[i].move(20 * cos(player.angles[i]), 15 * sin(player.angles[i]));
             }
         }
-        
+
         if (createShark) {
             if (sharksvect.size() == 0) {
                 switch (WaveIndex) {
-                case 1 :
-                    sharks.CreateShark(4, 6);
+                case 1:
+                    sharks.CreateShark(4, 6, 5, 4);
                     break;
                 case 2:
-                    sharks.CreateShark(9, 12);
+                    sharks.CreateShark(9, 12, 5, 4);
                     break;
                 case 3:
-                    sharks.CreateShark(20, 15);
+                    sharks.CreateShark(20, 15, 5, 4);
                     break;
                 }
                 WaveIndex++;
             }
         }
-        
-        
+
+
+
 #pragma region Requins
         for (auto& shark : sharksvect)
         {
             shark.shape.setTexture(requinTexture);
-            shark.rect.setPosition(shark.shape.getPosition().x,shark.shape.getPosition().y);
+            shark.rect.setPosition(shark.shape.getPosition().x, shark.shape.getPosition().y);
             window.draw(shark.shape);
         }
 
@@ -321,7 +342,7 @@ void main()
                     sMenu.switchUpgrading();
                     SkillMDelay.restart();
                 }
-                
+
             }
         }
 
@@ -333,8 +354,21 @@ void main()
         window.draw(ArgentTemp);
 
         window.display();
-        
-       if (!isDead) {
+        if (m.isPlayingCustom) {
+            if (sharksvect.size() <= 0 && boatvect.size() <= 0) {
+                m.isPlayingCustom = false;
+                m.actmenu();
+            }
+        }
+        if (boss.isSpecialATK) {
+            boss.SpecialBossATKMove();
+        }
+        else {
+            boss.SpecialBossBackward();
+        }
+            
+
+        if (!isDead) {
             if (player.Life <= 0) {
                 isDead = true;
                 m.actmenu();

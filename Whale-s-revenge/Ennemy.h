@@ -4,40 +4,43 @@
 #include "Player.h"
 #include "bullet.h"
 
+extern Player player;
+
 class Shark {
 public:
-	std::vector<bullet*> ennemyATK;
-	sf::Texture requin_texture;
-	sf::Sprite shape;
-	sf::RectangleShape rect;
-	int life;
-	bool isRanged;
-	int ProjectileSpeed = 20;
+    std::vector<bullet*> ennemyATK;
+    sf::Texture requin_texture;
+    sf::Sprite shape;
+    sf::RectangleShape rect;
+    int life;
+    bool isRanged;
+    int ProjectileSpeed = 20;
+    float Speed = -6;
 
-	Shark(const sf::Vector2f& size, const sf::Vector2f& position,int initialLife, bool ranged): life(initialLife), isRanged(ranged) {
-		rect.setSize(sf::Vector2f(130,130));
-		rect.setFillColor(sf::Color::White);
-		rect.setPosition(position);
-		shape.setScale(size);
-		shape.setPosition(position);
-	}
-	
+    Shark(const sf::Vector2f& size, const sf::Vector2f& position, int initialLife, bool ranged) : life(initialLife), isRanged(ranged) {
+        rect.setSize(sf::Vector2f(130, 130));
+        rect.setFillColor(sf::Color::White);
+        rect.setPosition(position);
+        shape.setScale(size);
+        shape.setPosition(position);
+    }
 
-	sf::Clock EnnemyATKCD;
 
-	void CreateShark(int MeleeSharks, int DistanceSharks);
+    sf::Clock EnnemyATKCD;
 
-	void moveAll(sf::Vector2f playerpos);
+    void CreateShark(int MeleeSharks, int DistanceSharks, int MLife, int DLife);
 
-	bool takeDamage(size_t sharkIndex,int damage);
+    void moveAll(sf::Vector2f playerpos);
 
-	void SharkATK(sf::Vector2f playerpos);
+    bool takeDamage(size_t sharkIndex, int damage);
 
-	void DeleteAll();
+    void SharkATK(sf::Vector2f playerpos);
 
-	void DeleteATK(size_t index);
+    void DeleteAll();
 
-	void SetDifficulty(int DifficultyIndex);
+    void DeleteATK(size_t index);
+
+    void SetDifficulty(int DifficultyIndex);
 };
 
 class Boat {
@@ -52,23 +55,43 @@ public:
     int attackDelay;
     sf::Clock attackTimer;
 
-    std::vector<sf::CircleShape> boatATK;  
+    std::vector<sf::CircleShape> boatATK;
     sf::Clock BoatsATK;
-    sf::Clock BiggerATKCD; 
+    sf::Clock BiggerATKCD;
 
     Boat(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int Life, float Speed)
         : life(Life), Speed(Speed), hasAttacked(false) {
         boatshape.setSize(size);
         boatshape.setFillColor(color);
         boatshape.setPosition(position);
-        attackDelay = (rand() % 10 + 1) * 1000;  
+        attackDelay = (rand() % 10 + 1) * 1000;
     }
 
-    void CreateBoats(int BoatNumber); 
-    void MoveBoat();  
-    void BoatATK();  
-    void BiggerATK(size_t index); 
-    void BoatTakeDamage(int PlayerDamage); 
+    void CreateBoats(int BoatNumber);
+    void MoveBoat();
+    void BoatATK();
+    void BiggerATK(size_t index);
+    void BoatTakeDamage(int PlayerDamage);
     void BoatATKTakeDamage(int PlayerDamage);
 
+};
+
+class Boss {
+public:
+    int life;
+    int damage;
+
+    bool isSpecialATK = false;
+
+    sf::RectangleShape RequinBossShape;
+    std::vector<sf::CircleShape> SharkBossBulle;
+    std::vector<sf::CircleShape> SharkBossShield;
+    sf::Clock SharkBossCD;
+
+    void CreateSharkBoss();
+    void BasicBossATK();
+    void SecondaryBossATK();
+    void SpecialBossATK();
+    void SpecialBossATKMove();
+    void SpecialBossBackward();
 };

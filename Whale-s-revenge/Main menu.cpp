@@ -20,6 +20,7 @@ button RemoveDistance(100, 285, 50, 100, true);
 button nbDistance(200, 285, 150, 100, true);
 
 button PlayCustom(1580, 950, 300, 100, false);
+button exit_button2(50,950,200,100,false);
 
 bool active = true;
 bool frame = false;
@@ -61,7 +62,6 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
     text.setOrigin(262, 26.5);
     text.setPosition(Vector2f(960, 200));
     text.setScale(1.5, 1.5);
-
 
     Text option_text2;
     option_text2.setFont(font);
@@ -139,6 +139,7 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
         case LevelMenu:
             CampagneButton.bdisplay(Color(252, 186, 3), Color::Black, window, 20, "Campagne");
             CustomLevelButton.bdisplay(Color(252, 186, 3), Color::Black, window, 20, "Custom");
+            exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
             break;
         case CustomMenu:
             AddMelee.bdisplay(Color(6, 117, 43), Color::Black, window, 20, "+");
@@ -150,6 +151,7 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             nbDistance.bdisplay(Color(222, 240, 250), Color::Black, window, 20, "");
 
             PlayCustom.bdisplay(Color::Green, Color::Black, window, 20, "PLAY");
+            exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
             break;
         }
 
@@ -182,6 +184,11 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             {
                 menuindex = CustomMenu;
             }
+            if (exit_button2.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+            {
+                menuindex = MainMenu;
+            }
+            
             break;
         case CustomMenu:
             if (AddMelee.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
@@ -199,6 +206,10 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
                 sharks.CreateShark(nbMeleeEnnemy, nbDistanceEnnemy, 4, 2);
                 isPlayingCustom = true;
                 active = false;
+            }
+            if (exit_button2.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+            {
+                menuindex = LevelMenu;
             }
             break;
 

@@ -36,6 +36,7 @@ int WaveIndex = 0;
 //A supprimé plus tard
 Clock NDelay;
 bool BossCreated = false;
+bool ShieldCreated = false;
 //
 Texture backgroundTexture;
 Texture waveTexture;
@@ -119,13 +120,19 @@ void main()
                 sharks.CreateShark(2, 5, 5, 4);
                 boat.CreateBoats(1);
                 createShark = true;
-                WaveIndex++;
-                
+                WaveIndex++;         
             }
         }
 
         if (Keyboard::isKeyPressed(Keyboard::B)) {
             boss.CreateSharkBoss();
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::V)) {
+            if (!ShieldCreated) {
+                boss.SecondaryBossATK();
+                ShieldCreated = true;
+            }
         }
 
         if (Keyboard::isKeyPressed(Keyboard::N)) {
@@ -286,6 +293,14 @@ void main()
                 window.draw(player.wave[i]);
                 player.wave[i].move(20 * cos(player.angles[i]), 15 * sin(player.angles[i]));
             }
+            if (ShieldCreated) {
+                boss.Shield1.move(-5, 0);
+                boss.Shield2.move(-5, 0);
+                boss.Shield3.move(-5, 0);
+            }
+            window.draw(boss.Shield1);
+            window.draw(boss.Shield2);
+            window.draw(boss.Shield3);
         }
 
         if (createShark) {
@@ -369,7 +384,6 @@ void main()
         else {
             boss.SpecialBossBackward(window);
         }
-            
 
         if (!isDead) {
             if (player.Life <= 0) {

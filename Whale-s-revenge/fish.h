@@ -1,13 +1,15 @@
 ﻿#pragma once
 #include "Player.h"
+#include <SFML/Graphics.hpp>
 class fish
 {
 private:
     int x;
     int y;
-    int liferegen;
+    sf::Texture texture;
 public:
-    fish(int posX,int posY, int liferegen): x(posX), y(posY), liferegen(liferegen){};
+    sf::Sprite sprite;
+    fish(){texture.loadFromFile("assets/fish.png");sprite.setTexture(texture);sprite.setPosition(sf::Vector2f(2000,500));};
     ~fish() {};
-    void colide(Player player);
+    void fishupdate();
 };

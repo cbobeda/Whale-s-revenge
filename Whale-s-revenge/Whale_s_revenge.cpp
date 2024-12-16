@@ -10,6 +10,7 @@
 #include <string>
 #include "SkillTree.h"
 #include "bonus.h"
+#include "fish.h"
 
 using namespace sf;
 using namespace std;
@@ -45,6 +46,7 @@ Clock watchanime;
 float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
 size_t currentFrameanime = 0;
 bonus b(500,500,10,10);
+fish fish;
 class Projectile {
 public:
     float directionX, directionY;
@@ -256,6 +258,7 @@ void main()
         }
         else
         {
+            fish.fishupdate();
             b.checkCollision(player);
             window.draw(skySprite);
             window.draw(skySprite2);
@@ -265,6 +268,7 @@ void main()
             window.draw(waveBackgroundSprite2);
             window.draw(player.PlayerSprite);
             window.draw(b.rect);
+            window.draw(fish.sprite);
             window.draw(boss.RequinBossShape);
             for (int i = 0; i < player.Life; i++)
             {

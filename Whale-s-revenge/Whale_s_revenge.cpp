@@ -9,6 +9,7 @@
 #include "bullet.h"
 #include <string>
 #include "SkillTree.h"
+#include "bonus.h"
 
 using namespace sf;
 using namespace std;
@@ -37,7 +38,7 @@ IntRect whaleRect;
 Clock watchanime;
 float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
 size_t currentFrameanime = 0;
-
+bonus b(500,500,10,10);
 class Projectile {
 public:
     float directionX, directionY;
@@ -92,7 +93,7 @@ void main()
     while (window.isOpen())
     {
         Event event;
-
+        
         
         
         if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
@@ -114,9 +115,9 @@ void main()
                 boat.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
+                
             }
         }
-
         if (Keyboard::isKeyPressed(Keyboard::W)) {
             player.MetalScrap += 50;
         }
@@ -170,7 +171,6 @@ void main()
                 }
             }
         }
-
         for (size_t i = 0; i < player.wave.size(); ++i) {
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.wave[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
@@ -183,7 +183,7 @@ void main()
                 }
             }
         }
-
+        
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
             if (sharks.ennemyATK[i]->shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
                 sharks.DeleteATK(i);
@@ -236,6 +236,7 @@ void main()
         }
         else
         {
+            b.checkCollision(player);
             window.draw(skySprite);
             window.draw(skySprite2);
             window.draw(waveSprite);
@@ -243,6 +244,7 @@ void main()
             window.draw(waveBackgroundSprite);
             window.draw(waveBackgroundSprite2);
             window.draw(player.PlayerSprite);
+            window.draw(b.rect);
             for (int i = 0; i < player.Life; i++)
             {
                 heartSprite.setPosition(100 * i, 100);
@@ -277,7 +279,7 @@ void main()
         
         
 #pragma region Requins
-        for (auto& shark : sharksvect)
+        for (auto &shark : sharksvect)
         {
             shark.shape.setTexture(requinTexture);
             shark.rect.setPosition(shark.shape.getPosition().x,shark.shape.getPosition().y);

@@ -9,7 +9,7 @@
 class Player {
 public:
 
-	std::vector<sf::CircleShape> bulles;
+	std::vector<sf::Sprite> bulles;
 	std::vector<sf::CircleShape> wave;
 
 	std::vector<float> angles;

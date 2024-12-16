@@ -1,8 +1,6 @@
 ﻿#include "bullet.h"
 void bullet::init(int x, int y)
 {
-    shape.setRadius(10);
-    shape.setFillColor(sf::Color::Yellow);
     shape.setPosition(x, y);
 }
 

@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bonus.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="Ennemy.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Whale_s_revenge.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bonus.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="Ennemy.h" />

@@ -3,6 +3,8 @@
 extern SkillMenu sMenu;
 
 using namespace sf;
+
+Texture texture;
 void Player::SetDifficulty(int DifficultyIndex) {
 	switch (DifficultyIndex) {
 	case 1:
@@ -34,10 +36,12 @@ void Player::InitializePlayer() {
 }
 
 void Player::CreateBulles() {
-	bulles.push_back(CircleShape());
-	bulles.back().setRadius(10);
+	texture.loadFromFile("assets/pearl.png");
+	Sprite bulle;
+	bulle.setTexture(texture);
+	bulles.push_back(bulle);
 	bulles.back().setOrigin(10, 10);
-	bulles.back().setFillColor(Color::Blue);
+	bulles.back().setColor(Color(212,243,248,255));
 	bulles.back().setPosition(PlayerSprite.getPosition());
 	timers1.push_back(Clock());
 }

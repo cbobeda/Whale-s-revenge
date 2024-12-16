@@ -67,8 +67,6 @@ void main()
     Sprite skySprite2;
     Sprite waveSprite;
     Sprite waveSprite2;
-    Sprite waveBackgroundSprite;
-    Sprite waveBackgroundSprite2;
     Sprite whaleSprite;
     Sprite heartSprite;
     skySprite.setTexture(backgroundTexture);
@@ -119,7 +117,7 @@ void main()
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             if (!createShark) {
                 sharks.CreateShark(2, 5, 5, 4);
-                //boat.CreateBoats(1);
+                boat.CreateBoats(1);
                 createShark = true;
                 WaveIndex++;
                 
@@ -246,8 +244,6 @@ void main()
         skySprite2.move(-5, 0);
         waveSprite.move(-10, 0);
         waveSprite2.move(-10, 0);
-        waveBackgroundSprite.move(-10, 0);
-        waveBackgroundSprite2.move(-10, 0);
         whaleSprite.setPosition(whaleSprite.getPosition().x + 64, 0);
         window.clear();
         if (m.mdisplay(window, event))
@@ -264,12 +260,19 @@ void main()
             window.draw(skySprite2);
             window.draw(waveSprite);
             window.draw(waveSprite2);
-            window.draw(waveBackgroundSprite);
-            window.draw(waveBackgroundSprite2);
-            window.draw(player.PlayerSprite);
+            for (auto& boats : boatvect) {
+                window.draw(boats.boatshape);
+            }
+            for (auto &shark : sharksvect)
+            {
+                shark.shape.setTexture(requinTexture);
+                shark.rect.setPosition(shark.shape.getPosition().x, shark.shape.getPosition().y);
+                window.draw(shark.shape);
+            }
             window.draw(b.rect);
             window.draw(fish.sprite);
             window.draw(boss.RequinBossShape);
+            window.draw(player.PlayerSprite);
             for (int i = 0; i < player.Life; i++)
             {
                 heartSprite.setPosition(100 * i, 100);
@@ -305,16 +308,9 @@ void main()
 
 
 #pragma region Requins
-        for (auto &shark : sharksvect)
-        {
-            shark.shape.setTexture(requinTexture);
-            shark.rect.setPosition(shark.shape.getPosition().x, shark.shape.getPosition().y);
-            window.draw(shark.shape);
-        }
+        
 
-        for (auto& boats : boatvect) {
-            window.draw(boats.boatshape);
-        }
+        
 
         if (sharksvect.size() != 0) {
             sharks.moveAll(player.PlayerSprite.getPosition());

@@ -44,11 +44,13 @@ public:
 };
 
 class Boat {
+private:
+    sf::Texture boat_texture;    
 public:
     int ATKRadius = 50;
     int BoatLife = 5;
     int BoatATKLife = 10;
-    sf::RectangleShape boatshape;
+    sf::Sprite boatshape;
     int life;
     float Speed = -8;
     bool hasAttacked;
@@ -61,8 +63,9 @@ public:
 
     Boat(const sf::Vector2f& size, const sf::Color& color, const sf::Vector2f& position, int Life, float Speed)
         : life(Life), Speed(Speed), hasAttacked(false) {
-        boatshape.setSize(size);
-        boatshape.setFillColor(color);
+        boat_texture.loadFromFile("assets/boat.png");
+        boatshape.setTexture(boat_texture);
+        boatshape.setScale(2,2);
         boatshape.setPosition(position);
         attackDelay = (rand() % 10 + 1) * 1000;
     }

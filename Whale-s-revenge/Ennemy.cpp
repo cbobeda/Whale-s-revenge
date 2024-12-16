@@ -102,7 +102,7 @@ void Boat::CreateBoats(int BoatNumber) {
     for (int i = 0; i < BoatNumber; i++) {
         BaseBoatSpawn += (rand() % 900) + 1000;
 
-        boatvect.emplace_back(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(BaseBoatSpawn, 400), 5, Speed);
+        boatvect.emplace_back(sf::Vector2f(100, 50), sf::Color(38, 182, 122), sf::Vector2f(BaseBoatSpawn, 325), 5, Speed);
     }
 }
 

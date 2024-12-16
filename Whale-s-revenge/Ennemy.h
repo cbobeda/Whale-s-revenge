@@ -85,12 +85,17 @@ public:
 
     sf::RectangleShape RequinBossShape;
     std::vector<sf::CircleShape> SharkBossBulle;
-    std::vector<sf::CircleShape> SharkBossShield;
+
+    sf::CircleShape Shield1;
+    sf::CircleShape Shield2;
+    sf::CircleShape Shield3;
+
     sf::Clock SharkBossCD;
 
     void CreateSharkBoss();
     void BasicBossATK();
     void SecondaryBossATK();
+    void SecondayBossTakeDamage();
     void SpecialBossATK();
     void SpecialBossATKMove();
     void SpecialBossBackward();

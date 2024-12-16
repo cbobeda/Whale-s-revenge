@@ -160,6 +160,20 @@ void Boss::BasicBossATK() {
 }
 
 void Boss::SecondaryBossATK() {
+    Shield1.setFillColor(Color(2, 127, 144));
+    Shield2.setFillColor(Color(2, 127, 144));
+    Shield3.setFillColor(Color(2, 127, 144));
+
+    Shield1.setPosition(1200, 450);
+    Shield2.setPosition(1200, 650);
+    Shield3.setPosition(1200, 850);
+
+    Shield1.setRadius(100);
+    Shield2.setRadius(100);
+    Shield3.setRadius(100);
+}
+
+void Boss::SecondayBossTakeDamage() {
 
 }
 

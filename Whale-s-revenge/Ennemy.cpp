@@ -148,11 +148,30 @@ void Boat::BoatATKTakeDamage(int PlayerDamage) {
 #pragma endregion ClassBateau
 
 void Boss::CreateSharkBoss() {
-    life = 50;
+    life = 30;
     damage = 1;
     RequinBossShape.setSize(Vector2f(350, 350));
-    RequinBossShape.setPosition(1400, 500);
+    RequinBossShape.setPosition(1400, 700);
     RequinBossShape.setFillColor(Color::Green);
+}
+
+void Boss::MoveBoss() {
+    float currentY = RequinBossShape.getPosition().y;
+    if (CanMoove) {
+        if (currentY >= 750) {
+            movingDown = false;
+        }
+        else if (currentY <= 470) {
+            movingDown = true;
+        }
+
+        if (movingDown) {
+            RequinBossShape.move(0, 5);
+        }
+        else {
+            RequinBossShape.move(0, -5);
+        }
+    }    
 }
 
 void Boss::BasicBossATK() {
@@ -160,25 +179,36 @@ void Boss::BasicBossATK() {
 }
 
 void Boss::SecondaryBossATK() {
-    Shield1.setFillColor(Color(2, 127, 144));
-    Shield2.setFillColor(Color(2, 127, 144));
-    Shield3.setFillColor(Color(2, 127, 144));
+    Shields.clear();
 
-    Shield1.setPosition(1200, 450);
-    Shield2.setPosition(1200, 650);
-    Shield3.setPosition(1200, 850);
+    std::vector<sf::Vector2f> positions = {
+        {1200, 570},
+        {1200, 770},
+        {1200, 970}
+    };
 
-    Shield1.setRadius(100);
-    Shield2.setRadius(100);
-    Shield3.setRadius(100);
+    for (const auto& position : positions) {
+        sf::CircleShape shield;
+        shield.setFillColor(sf::Color(2, 127, 144));
+        shield.setPosition(position);
+        shield.setRadius(100);
+        shield.setOrigin(100, 100);
+        Shields.push_back(shield);
+    }
 }
 
-void Boss::SecondayBossTakeDamage() {
-
+void Boss::SecondayBossTakeDamage(size_t shieldsindex) {
+    if (shieldsindex < Shields.size()) {
+        Shields[shieldsindex].setOrigin(Shields[shieldsindex].getRadius()/2, Shields[shieldsindex].getRadius()/2);
+        Shields[shieldsindex].setRadius(Shields[shieldsindex].getRadius()/2);
+        if (Shields[shieldsindex].getRadius() <= 12.5) {
+            Shields.erase(Shields.begin() + shieldsindex);
+        }
+    }
 }
 
 void Boss::SpecialBossATK() {
-
+    CanMoove = false;
     RequinBossShape.setPosition(1400, (player.PlayerSprite.getPosition().y - 200));
     RequinBossShape.move(-10, 0);
 }
@@ -198,4 +228,5 @@ void Boss::SpecialBossBackward(RenderWindow& window){
         RequinBossShape.move(10, 0);
         //window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
     }
+    CanMoove = true;
 }

@@ -84,22 +84,22 @@ class Boss {
 public:
     int life;
     int damage;
+    bool movingDown = true;
+    bool CanMoove = true;
 
     bool isSpecialATK = false;
 
     sf::RectangleShape RequinBossShape;
     std::vector<sf::CircleShape> SharkBossBulle;
-
-    sf::CircleShape Shield1;
-    sf::CircleShape Shield2;
-    sf::CircleShape Shield3;
+    std::vector<sf::CircleShape> Shields;
 
     sf::Clock SharkBossCD;
 
     void CreateSharkBoss();
+    void MoveBoss();
     void BasicBossATK();
     void SecondaryBossATK();
-    void SecondayBossTakeDamage();
+    void SecondayBossTakeDamage(size_t shieldsindex);
     void SpecialBossATK();
     void SpecialBossATKMove();
     void SpecialBossBackward(RenderWindow& window);

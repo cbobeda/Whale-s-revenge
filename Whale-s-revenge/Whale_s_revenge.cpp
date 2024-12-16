@@ -367,7 +367,7 @@ void main()
             boss.SpecialBossATKMove();
         }
         else {
-            boss.SpecialBossBackward();
+            boss.SpecialBossBackward(window);
         }
             
 

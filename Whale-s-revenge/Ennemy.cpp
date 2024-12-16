@@ -179,8 +179,9 @@ void Boss::SpecialBossATKMove() {
         }
     }
 }
-void Boss::SpecialBossBackward(){
+void Boss::SpecialBossBackward(RenderWindow& window){
     if (RequinBossShape.getPosition().x <= 1400) {
         RequinBossShape.move(10, 0);
+        //window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
     }
 }

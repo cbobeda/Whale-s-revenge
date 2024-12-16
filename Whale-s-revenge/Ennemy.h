@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "bullet.h"
 
+using namespace sf;
 extern Player player;
 
 class Shark {
@@ -96,5 +97,5 @@ public:
     void SecondaryBossATK();
     void SpecialBossATK();
     void SpecialBossATKMove();
-    void SpecialBossBackward();
+    void SpecialBossBackward(RenderWindow& window);
 };

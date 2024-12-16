@@ -88,7 +88,7 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
     }
     Sprite background_sprite;
     background_sprite.setTexture(background);
-    if (true)window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
+    //if (true)window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
     window.draw(background_sprite);
     if (option)
     {

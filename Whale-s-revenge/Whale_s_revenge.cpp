@@ -250,7 +250,7 @@ void main()
         window.clear();
         if (m.mdisplay(window, event))
         {
-            if (true)window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
+            //if (true)window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
             sharks.SetDifficulty(m.DifficultyIndex);
             player.SetDifficulty(m.DifficultyIndex);
         }

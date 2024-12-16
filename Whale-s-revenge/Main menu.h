@@ -1,17 +1,30 @@
 ﻿#include <SFML/Graphics.hpp>
 #include "button.h"
 #include <iostream>
+#include "Ennemy.h"
 using namespace sf;
-extern button play_button;
+extern button selectmenu_button;
+extern Shark sharks;
+
+enum MenuIndex { MainMenu, LevelMenu, CustomMenu };
+
+extern MenuIndex menuindex;
+
 class Main_menu
 {
 private:
     int height;
     int width;
-    
+
 public:
-    Main_menu(int h,int w): height(h),width(w) {};
+    Main_menu(int h, int w) : height(h), width(w) {};
+
     int DifficultyIndex = 2;
-    bool mdisplay(sf::RenderWindow& window,Event event);
+    int nbMeleeEnnemy = 0;
+    int nbDistanceEnnemy = 0;
+
+    bool isPlayingCustom = false;
+
+    bool mdisplay(sf::RenderWindow& window, Event event);
     void actmenu();
 };

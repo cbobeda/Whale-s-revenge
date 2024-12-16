@@ -19,6 +19,9 @@ public:
 
 	sf::Texture whaleTexture;
 	sf::Sprite PlayerSprite;
+
+	sf::Clock InvicibleFrame;
+
 	int Life;
 	float Speed;
 	float ProjectileSpeed;

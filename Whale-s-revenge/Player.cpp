@@ -20,7 +20,7 @@ void Player::SetDifficulty(int DifficultyIndex) {
 }
 
 void Player::InitializePlayer() {
-	
+
 	PlayerSprite.setPosition(100, 600);
 	whaleTexture.loadFromFile("assets/blue-whale.png");
 	PlayerSprite.setTexture(whaleTexture);
@@ -47,11 +47,9 @@ void Player::CreateBulles() {
 }
 
 void Player::DeleteBulles() {
-	std::cout << "delete proj" << std::endl;
 	bulles.erase(bulles.begin());
 	angles.erase(angles.begin());
 	timers1.erase(timers1.begin());
-	std::cout << "delete proj fini" << std::endl;
 }
 
 void Player::CreateWave() {
@@ -70,5 +68,8 @@ void Player::DeleteWave() {
 }
 
 void Player::TakeDamage() {
-	Life -= 1;
+	if (InvicibleFrame.getElapsedTime().asSeconds() > 1) {
+		Life -= 1;
+		InvicibleFrame.restart();
+	}
 }

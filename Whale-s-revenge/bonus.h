@@ -1,7 +1,11 @@
 ﻿#pragma once
 #include "Player.h"
+#include "Ennemy.h"
 #include <SFML/Graphics.hpp>
+#include <vector>
 
+
+extern std::vector<Shark> sharksvect;
 class bonus
 {
 private:

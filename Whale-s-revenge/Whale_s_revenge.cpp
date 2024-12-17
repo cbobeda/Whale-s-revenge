@@ -46,7 +46,7 @@ IntRect whaleRect;
 Clock watchanime;
 float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
 size_t currentFrameanime = 0;
-bonus b(500,500,10,10);
+bonus b(2000,500,10,10);
 fish fish;
 class Projectile {
 public:

@@ -4,7 +4,10 @@
 
 void bonus::checkCollision(Player &player)
 {
-    rect.move(-5,0);
+    if (sharksvect.size() > 0)
+    {
+        rect.move(-5,0);
+    }
     if (player.PlayerSprite.getGlobalBounds().intersects(this->rect.getGlobalBounds()))
     {
         player.Life += 1;

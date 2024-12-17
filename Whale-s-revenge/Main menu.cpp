@@ -30,12 +30,16 @@ bool frame = false;
 bool isready = false;
 bool option = false;
 bool bcd = true;
+bool bbcd = true;
 
 Clock watch;
 float frameDuration = 0.5f; // Durée d'une frame (en secondes)
 
 sf::Clock buttonCd;
 float bframeDuration = 0.5f; // Durée d'une frame (en secondes)
+
+sf::Clock bossbuttonCd;
+float bbframeDuration = 0.5f; // Durée d'une frame (en secondes)
 
 
 void Main_menu::actmenu()
@@ -244,9 +248,11 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             {
                 menuindex = MainMenu;
             }
-            if (PlayBoss1.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+            if (PlayBoss1.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && bbcd)
             {
                 isPlayingBoss1 = true;
+                PlayBoss1.setclicked();
+                bbcd = false;
             }
             break;
         case GameOver:
@@ -279,6 +285,11 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
     {
         bcd = true;
         buttonCd.restart();
+    }
+    if (bossbuttonCd.getElapsedTime().asSeconds() > bbframeDuration)
+    {
+        bbcd = true;
+        bossbuttonCd.restart();
     }
 
     return active;

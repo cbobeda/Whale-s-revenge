@@ -161,11 +161,11 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             window.draw(text);
             AddMelee.bdisplay(Color(6, 117, 43), Color::Black, window, 20, "+");
             RemoveMelee.bdisplay(Color(117, 6, 21), Color::Black, window, 20, "-");
-            nbMelee.bdisplay(Color(222, 240, 250), Color::Black, window, 20, "");
+            nbMelee.bdisplay(Color(222, 240, 250), Color::Black, window, 20, std::to_string(nbMeleeEnnemy));
 
             AddDistance.bdisplay(Color(6, 117, 43), Color::Black, window, 20, "+");
             RemoveDistance.bdisplay(Color(117, 6, 21), Color::Black, window, 20, "-");
-            nbDistance.bdisplay(Color(222, 240, 250), Color::Black, window, 20, "");
+            nbDistance.bdisplay(Color(222, 240, 250), Color::Black, window, 20, std::to_string(nbDistanceEnnemy));
 
             PlayCustom.bdisplay(Color::Green, Color::Black, window, 20, "PLAY");
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
@@ -219,9 +219,19 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
                 nbMeleeEnnemy += 1;
                 std::cout << nbMeleeEnnemy << std::endl;
             }
+            if (RemoveMelee.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)&& nbMeleeEnnemy > 0)
+            {
+                nbMeleeEnnemy -= 1;
+                std::cout << nbMeleeEnnemy << std::endl;
+            }
             if (AddDistance.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
             {
                 nbDistanceEnnemy += 1;
+                std::cout << nbDistanceEnnemy << std::endl;
+            }
+            if (RemoveDistance.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left) && nbDistanceEnnemy > 0)
+            {
+                nbDistanceEnnemy -= 1;
                 std::cout << nbDistanceEnnemy << std::endl;
             }
             if (PlayCustom.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))

@@ -84,6 +84,7 @@ class Boss {
 public:
     int life;
     int damage;
+    int ATKCD = 3;
     bool movingDown = true;
     bool CanMoove = true;
     bool BossCreated = false;
@@ -100,7 +101,7 @@ public:
     void MoveBoss();
     void BasicBossATK(Vector2f playerpos);
     void PrimaryATKDelete(size_t bullesbossindex);
-    void BossTakeDamage(int playerDamage);
+    void BossTakeDamage(int playerDamage, int DifficultyIndex);
     void SecondaryBossATK();
     void SecondayBossTakeDamage(size_t shieldsindex);
     void SecondaryBossDestroy(size_t shieldsindex);

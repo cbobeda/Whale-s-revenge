@@ -152,7 +152,7 @@ void Boat::BoatATKTakeDamage(int PlayerDamage) {
 #pragma endregion ClassBateau
 
 void Boss::CreateSharkBoss() {
-    life = 30;
+    life = 40;
     damage = 1;
     RequinBossShape.setSize(Vector2f(350, 350));
     RequinBossShape.setPosition(1400, 700);
@@ -229,11 +229,25 @@ void Boss::SecondaryBossDestroy(size_t shieldsindex) {
 void Boss::SpecialBossATK() {
     CanMoove = false;
     RequinBossShape.setPosition(1400, (player.PlayerSprite.getPosition().y - 200));
-    RequinBossShape.move(-10, 0);
+    RequinBossShape.move(-7, 0);
 }
 
-void Boss::BossTakeDamage(int playerDamage) {
+void Boss::BossTakeDamage(int playerDamage,int DifficultyIndex) {
     life -= playerDamage;
+    if (life <= 10) {
+        switch (DifficultyIndex) {
+        case 1:
+            ATKCD = 3;
+            break;
+        case 2:
+            ATKCD = 2;
+            break;
+        case 3:
+            ATKCD = 1.5;
+            break;
+        }
+
+    }
     if (life <= 0) {
         BossCreated = false;
         RequinBossShape.setPosition(5000, 5000);

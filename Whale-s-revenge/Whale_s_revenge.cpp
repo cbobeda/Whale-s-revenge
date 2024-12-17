@@ -80,7 +80,7 @@ void main()
     whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge", Style::Fullscreen);
     window.setFramerateLimit(60);
 
     Clock clock;
@@ -140,7 +140,7 @@ void main()
         }
 
         if (Keyboard::isKeyPressed(Keyboard::N)) {
-            if(NDelay.getElapsedTime().asSeconds() > 2){
+            if (NDelay.getElapsedTime().asSeconds() > 2) {
                 boss.SpecialBossATK();
                 NDelay.restart();
                 boss.isSpecialATK = true;
@@ -191,7 +191,7 @@ void main()
         for (size_t i = 0; i < player.bulles.size(); ++i) {
             if (player.bulles[i].getGlobalBounds().intersects(boss.RequinBossShape.getGlobalBounds())) {
                 player.DeleteBulles();
-                boss.BossTakeDamage(player.PlayerDamage);
+                boss.BossTakeDamage(player.PlayerDamage, m.DifficultyIndex);
             }
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
@@ -355,26 +355,26 @@ void main()
                         boss.CreateSharkBoss();
                         boss.BossCreated = true;
                         break;
-                    }                  
+                    }
                     WaveIndex++;
                 }
             }
             if (boss.BossCreated) {
                 boss.MoveBoss();
-                int BossATK = (rand() % 10);
-                if (boss.SharkBossCD.getElapsedTime().asSeconds() > 5) {
+                int BossATK = (rand() % 11);
+                if (boss.SharkBossCD.getElapsedTime().asSeconds() > boss.ATKCD) {
                     boss.SharkBossCD.restart();
                     if (BossATK >= 0 && BossATK <= 3) {
-                        boss.BasicBossATK(player.PlayerSprite.getPosition());                       
+                        boss.BasicBossATK(player.PlayerSprite.getPosition());
                     }
                     if (BossATK > 3 && BossATK <= 7) {
                         boss.SecondaryBossATK();
                     }
-                    if (BossATK > 7 && BossATK <= 10) {
-                       boss.isSpecialATK = true;
+                    if (BossATK > 7 && BossATK <= 11) {
+                        boss.isSpecialATK = true;
                     }
                 }
-                
+
             }
             for (auto& shield : boss.Shields) {
                 shield.move(-9, 0);
@@ -438,12 +438,22 @@ void main()
         }
 
         window.display();
-        if (m.isPlayingCustom) {
-            if (sharksvect.size() <= 0 && boatvect.size() <= 0) {
+        if (m.isPlayingCustom && sharksvect.size() <= 0 && boss.life <= 0){
+            if (m.isPlayingBoss1 && !boss.BossCreated) {
+                boss.CreateSharkBoss();
+                boss.BossCreated = true;
+            }
+            else {
+                m.isPlayingCustom = false;
+                m.actmenu();
+            }
+            if (boss.BossCreated && boss.life <= 0) {
+                boss.BossCreated = false;
                 m.isPlayingCustom = false;
                 m.actmenu();
             }
         }
+       
         if (boss.isSpecialATK) {
             boss.SpecialBossATKMove();
         }

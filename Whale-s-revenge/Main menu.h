@@ -24,6 +24,7 @@ public:
     int nbDistanceEnnemy = 0;
 
     bool isPlayingCustom = false;
+    bool isPlayingBoss1 = false;
 
     bool mdisplay(sf::RenderWindow& window, Event event);
     void actmenu();

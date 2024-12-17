@@ -18,6 +18,7 @@ button nbMelee(200, 135, 150, 100, true);
 button AddDistance(400, 285, 50, 100, true);
 button RemoveDistance(100, 285, 50, 100, true);
 button nbDistance(200, 285, 150, 100, true);
+button PlayBoss1(600, 285, 150, 100, true);
 
 button PlayCustom(1580, 950, 300, 100, false);
 button exit_button2(50,950,200,100,false);
@@ -168,11 +169,12 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
 
             PlayCustom.bdisplay(Color::Green, Color::Black, window, 20, "PLAY");
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
+            PlayBoss1.bdisplay(Color(6, 117, 43), Color::Black, window, 20, "BOSS 1");
             break;
         case GameOver:
             window.draw(gameOverText);
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
-            playAgain.bdisplay(Color::Green, Color::Black, window, 20, "Play Again");
+            playAgain.bdisplay(Color::Green, Color::Black, window, 10, "Play Again");
         }
 
     }
@@ -231,6 +233,10 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             if (exit_button2.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
             {
                 menuindex = MainMenu;
+            }
+            if (PlayBoss1.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+            {
+                isPlayingBoss1 = true;
             }
             break;
         case GameOver:

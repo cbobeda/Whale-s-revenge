@@ -169,12 +169,12 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
 
             PlayCustom.bdisplay(Color::Green, Color::Black, window, 20, "PLAY");
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
-            PlayBoss1.bdisplay(Color(6, 117, 43), Color::Black, window, 20, "BOSS 1");
+            PlayBoss1.bdisplay(Color(6, 117, 43), Color::Black, window, 15, "BOSS 1");
             break;
         case GameOver:
             window.draw(gameOverText);
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
-            playAgain.bdisplay(Color::Green, Color::Black, window, 10, "Play Again");
+            playAgain.bdisplay(Color::Green, Color::Black, window, 20, "Play Again");
         }
 
     }

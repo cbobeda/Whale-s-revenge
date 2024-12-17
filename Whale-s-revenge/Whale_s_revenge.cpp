@@ -352,6 +352,13 @@ void main()
             else if (boat.boatATK[i].getPosition().y >= 1000) {
                 boat.BiggerATK(i);
             }
+            for (auto& bulle : player.bulles)
+            {
+                if (boat.boatATK[i].getGlobalBounds().intersects(bulle.getGlobalBounds()))
+                {
+                    boat.boatATK.erase(boat.boatATK.begin() + i);
+                }
+            }
         }
 #pragma endregion Requins
 

@@ -26,7 +26,7 @@ void Player::InitializePlayer() {
 	PlayerSprite.setTexture(whaleTexture);
 	PlayerSprite.setTextureRect(sf::IntRect(0, 0, 64, 50));
 	PlayerSprite.setOrigin(60, 25);
-	PlayerSprite.setScale(3, 3);
+	PlayerSprite.setScale(2.5, 2.5);
 
 	Life = 5;
 	Speed = 10.f;

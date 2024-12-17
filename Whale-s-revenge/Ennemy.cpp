@@ -152,7 +152,7 @@ void Boat::BoatATKTakeDamage(int PlayerDamage) {
 #pragma endregion ClassBateau
 
 void Boss::CreateSharkBoss() {
-    life = 40;
+    life = 1;
     damage = 1;
     RequinBossShape.setSize(Vector2f(350, 350));
     RequinBossShape.setPosition(1400, 700);
@@ -179,14 +179,16 @@ void Boss::MoveBoss() {
 }
 
 void Boss::BasicBossATK(Vector2f playerpos) {
-            SharkBossBulle.push_back(new bullet(playerpos, RequinBossShape.getPosition()));
-            for (auto& projectile : SharkBossBulle)
+    for (int i = 0; i < 10; i++) {
+        SharkBossBulle.push_back(new bullet(playerpos, Vector2f(RequinBossShape.getPosition().x, RequinBossShape.getPosition().y + i *20)));
+        for (auto& projectile : SharkBossBulle)
+        {
+            if (projectile->shape.getPosition().x == 0 && projectile->shape.getPosition().y == 0)
             {
-                if (projectile->shape.getPosition().x == 0 && projectile->shape.getPosition().y == 0)
-                {
-                    projectile->init(RequinBossShape.getPosition().x, RequinBossShape.getPosition().y);
-                }
+                projectile->init(RequinBossShape.getPosition().x, RequinBossShape.getPosition().y);
             }
+        }
+    }           
 }
 
 void Boss::SecondaryBossATK() {
@@ -234,7 +236,7 @@ void Boss::SpecialBossATK() {
 
 void Boss::BossTakeDamage(int playerDamage,int DifficultyIndex) {
     life -= playerDamage;
-    if (life <= 10) {
+    if (life <= 15) {
         switch (DifficultyIndex) {
         case 1:
             ATKCD = 3;
@@ -266,7 +268,7 @@ void Boss::SpecialBossATKMove() {
 }
 void Boss::SpecialBossBackward(RenderWindow& window){
     if (RequinBossShape.getPosition().x <= 1400) {
-        RequinBossShape.move(10, 0);
+        RequinBossShape.move(20, 0);
         //window.setPosition(sf::Vector2i(0 + rand() % 25, 0 + rand() % 25));
     }
     CanMoove = true;

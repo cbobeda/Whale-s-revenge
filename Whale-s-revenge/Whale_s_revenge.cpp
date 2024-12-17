@@ -11,6 +11,7 @@
 #include "SkillTree.h"
 #include "bonus.h"
 #include "fish.h"
+#include "button.h"
 
 using namespace sf;
 using namespace std;
@@ -26,12 +27,16 @@ Boss boss;
 MenuIndex menuindex;
 SkillMenu sMenu;
 
+extern button selectmenu_button;
+
 bool createShark = false;
 bool isDead = false;
 
 Clock SkillMDelay;
 
-int WaveIndex = 0;
+int WaveIndex = 1;
+int LevelIndex = 1;
+button PlayWave(1780, 950, 100, 100, false);
 
 //A supprimé plus tard
 Clock NDelay;
@@ -113,26 +118,6 @@ void main()
         }
         if (Keyboard::isKeyPressed(Keyboard::S) && player.PlayerSprite.getPosition().y - player.Speed < 1000) {
             player.PlayerSprite.move(0, player.Speed);
-        }
-
-        if (Keyboard::isKeyPressed(Keyboard::P)) {
-            if (!createShark) {
-                sharks.CreateShark(2, 5, 5, 4);
-                //boat.CreateBoats(1);
-                createShark = true;
-                WaveIndex++;
-            }
-        }
-
-        if (Keyboard::isKeyPressed(Keyboard::B)) {
-            boss.CreateSharkBoss();
-        }
-
-        if (Keyboard::isKeyPressed(Keyboard::V)) {
-            if (!ShieldCreated) {
-                boss.SecondaryBossATK();
-                ShieldCreated = true;
-            }
         }
 
         if (Keyboard::isKeyPressed(Keyboard::O)) {
@@ -320,6 +305,60 @@ void main()
             window.draw(b.rect);
             window.draw(fish.sprite);
             window.draw(boss.RequinBossShape);
+            if (!createShark && boss.life <= 0) {
+                PlayWave.bdisplay(Color::Green, Color::Black, window, 20, ">");
+            }
+            if (PlayWave.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)) {
+                if (sharksvect.size() == 0 && boss.life <= 0) {
+                    createShark = true;
+                    switch (LevelIndex) {
+                        case 1:
+                            switch (WaveIndex) {
+                            case 1:
+                                sharks.CreateShark(3, 4, 5, 4);
+                                boat.CreateBoats(1);
+                                break;
+                            case 2:
+                                sharks.CreateShark(4, 6, 5, 4);
+                                break;
+                            case 3:
+                                sharks.CreateShark(6, 8, 5, 4);
+                                break;
+                            case 4:
+                                sharks.CreateShark(8, 10, 5, 4);
+                                boat.CreateBoats(1);
+                                break;
+                            case 5:
+                                boss.CreateSharkBoss();
+                                boss.BossCreated = true;
+                                LevelIndex++;
+                                WaveIndex = 0;
+                                break;
+                            }
+                            WaveIndex++;
+                            break;
+                        case 2:
+                            switch (WaveIndex) {
+                            case 1:
+                                sharks.CreateShark(10, 10, 7, 6);
+                                break;
+                            case 2:
+                                sharks.CreateShark(30, 0, 8, 6);
+                                break;
+                            case 3:
+                                sharks.CreateShark(0, 20, 7, 5);
+                                break;
+                            case 4:
+                                sharks.CreateShark(15, 15, 7, 6);
+                                break;
+                            }
+                            WaveIndex++;
+                            break;
+                    }
+                }                    
+            }
+
+
             for (auto& shield : boss.Shields) {
                 window.draw(shield);
             }
@@ -341,43 +380,30 @@ void main()
 
             if (createShark) {
                 if (sharksvect.size() == 0) {
-                    switch (WaveIndex) {
-                    case 1:
-                        sharks.CreateShark(4, 6, 5, 4);
-                        break;
-                    case 2:
-                        sharks.CreateShark(6, 8, 5, 4);
-                        break;
-                    case 3:
-                        sharks.CreateShark(8, 10, 5, 4);
-                        break;
-                    case 4:
-                        boss.CreateSharkBoss();
-                        boss.BossCreated = true;
-                        break;
-                    }
-                    WaveIndex++;
+                    createShark = false;
                 }
             }
-            if (boss.BossCreated) {
-                boss.MoveBoss();
-                int BossATK = (rand() % 11);
-                if (boss.SharkBossCD.getElapsedTime().asSeconds() > boss.ATKCD) {
-                    boss.SharkBossCD.restart();
-                    if (BossATK >= 0 && BossATK <= 3) {
-                        boss.BasicBossATK(player.PlayerSprite.getPosition());
-                    }
-                    if (BossATK > 3 && BossATK <= 7) {
-                        boss.SecondaryBossATK();
-                    }
-                    if (BossATK > 7 && BossATK <= 11) {
-                        boss.isSpecialATK = true;
-                    }
-                }
 
-            }
-            for (auto& shield : boss.Shields) {
-                shield.move(-9, 0);
+                if (boss.BossCreated) {
+                    boss.MoveBoss();
+                    int BossATK = (rand() % 11);
+                    if (boss.SharkBossCD.getElapsedTime().asSeconds() > boss.ATKCD) {
+                        boss.SharkBossCD.restart();
+                        if (BossATK >= 0 && BossATK <= 3) {
+                            boss.BasicBossATK(player.PlayerSprite.getPosition());
+                        }
+                        if (BossATK > 3 && BossATK <= 7) {
+                            boss.SecondaryBossATK();
+                        }
+                        if (BossATK > 7 && BossATK <= 11) {
+                            boss.isSpecialATK = true;
+                        }
+                    }
+
+                }
+                for (auto& shield : boss.Shields) {
+                    shield.move(-9, 0);
+                
             }
         }
 

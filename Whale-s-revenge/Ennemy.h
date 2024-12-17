@@ -38,7 +38,7 @@ public:
     void SharkATK(sf::Vector2f playerpos);
 
     void DeleteAll();
-
+    void DeleteShark(size_t sharkindex);
     void DeleteATK(size_t index);
 
     void SetDifficulty(int DifficultyIndex);
@@ -86,20 +86,24 @@ public:
     int damage;
     bool movingDown = true;
     bool CanMoove = true;
+    bool BossCreated = false;
 
     bool isSpecialATK = false;
 
     sf::RectangleShape RequinBossShape;
-    std::vector<sf::CircleShape> SharkBossBulle;
+    std::vector<bullet*> SharkBossBulle;
     std::vector<sf::CircleShape> Shields;
 
     sf::Clock SharkBossCD;
 
     void CreateSharkBoss();
     void MoveBoss();
-    void BasicBossATK();
+    void BasicBossATK(Vector2f playerpos);
+    void PrimaryATKDelete(size_t bullesbossindex);
+    void BossTakeDamage(int playerDamage);
     void SecondaryBossATK();
     void SecondayBossTakeDamage(size_t shieldsindex);
+    void SecondaryBossDestroy(size_t shieldsindex);
     void SpecialBossATK();
     void SpecialBossATKMove();
     void SpecialBossBackward(RenderWindow& window);

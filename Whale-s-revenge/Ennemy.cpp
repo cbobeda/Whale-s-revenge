@@ -83,6 +83,10 @@ void Shark::SharkATK(Vector2f playerpos) {
     }
 }
 
+void Shark::DeleteShark(size_t sharkindex) {
+    sharksvect.erase(sharksvect.begin() + sharkindex);
+}
+
 void Shark::DeleteAll() {
     sharksvect.clear();
     ennemyATK.clear();
@@ -174,8 +178,15 @@ void Boss::MoveBoss() {
     }    
 }
 
-void Boss::BasicBossATK() {
-
+void Boss::BasicBossATK(Vector2f playerpos) {
+            SharkBossBulle.push_back(new bullet(playerpos, RequinBossShape.getPosition()));
+            for (auto& projectile : SharkBossBulle)
+            {
+                if (projectile->shape.getPosition().x == 0 && projectile->shape.getPosition().y == 0)
+                {
+                    projectile->init(RequinBossShape.getPosition().x, RequinBossShape.getPosition().y);
+                }
+            }
 }
 
 void Boss::SecondaryBossATK() {
@@ -197,20 +208,36 @@ void Boss::SecondaryBossATK() {
     }
 }
 
+void Boss::PrimaryATKDelete(size_t bullesbossindex) {
+    SharkBossBulle.erase(SharkBossBulle.begin() + bullesbossindex);
+}
+
 void Boss::SecondayBossTakeDamage(size_t shieldsindex) {
     if (shieldsindex < Shields.size()) {
         Shields[shieldsindex].setOrigin(Shields[shieldsindex].getRadius()/2, Shields[shieldsindex].getRadius()/2);
         Shields[shieldsindex].setRadius(Shields[shieldsindex].getRadius()/2);
         if (Shields[shieldsindex].getRadius() <= 12.5) {
             Shields.erase(Shields.begin() + shieldsindex);
-        }
+        } 
     }
+}
+
+void Boss::SecondaryBossDestroy(size_t shieldsindex) {
+    Shields.erase(Shields.begin() + shieldsindex);
 }
 
 void Boss::SpecialBossATK() {
     CanMoove = false;
     RequinBossShape.setPosition(1400, (player.PlayerSprite.getPosition().y - 200));
     RequinBossShape.move(-10, 0);
+}
+
+void Boss::BossTakeDamage(int playerDamage) {
+    life -= playerDamage;
+    if (life <= 0) {
+        BossCreated = false;
+        RequinBossShape.setPosition(5000, 5000);
+    }
 }
 
 void Boss::SpecialBossATKMove() {

@@ -68,7 +68,7 @@ public:
         boatshape.setTexture(boat_texture);
         boatshape.setScale(2,2);
         boatshape.setPosition(position);
-        attackDelay = (rand() % 10 + 1) * 1000;
+        attackDelay = (rand() % 5 + 1) * 1000;
     }
 
     void CreateBoats(int BoatNumber);

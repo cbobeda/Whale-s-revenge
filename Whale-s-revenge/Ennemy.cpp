@@ -152,7 +152,7 @@ void Boat::BoatATKTakeDamage(int PlayerDamage) {
 #pragma endregion ClassBateau
 
 void Boss::CreateSharkBoss() {
-    life = 1;
+    life = 40;
     damage = 1;
     RequinBossShape.setSize(Vector2f(350, 350));
     RequinBossShape.setPosition(1400, 700);

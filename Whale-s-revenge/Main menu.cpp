@@ -22,6 +22,8 @@ button nbDistance(200, 285, 150, 100, true);
 button PlayCustom(1580, 950, 300, 100, false);
 button exit_button2(50,950,200,100,false);
 
+button playAgain(1580, 950, 300, 100, false);
+
 bool active = true;
 bool frame = false;
 bool isready = false;
@@ -75,6 +77,17 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
     option_text2.setScale(1.5, 1.5);
     option_text2.setString("OPTION");
 
+    Text gameOverText;
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(40);
+    gameOverText.setFillColor(Color::White);
+    gameOverText.setOutlineColor(Color::Black);
+    gameOverText.setOutlineThickness(5);
+    gameOverText.setString("GAME OVER");
+    gameOverText.setOrigin(gameOverText.getLocalBounds().left / 2, gameOverText.getLocalBounds().top / 2);
+    gameOverText.setPosition(Vector2f(650, 300));
+    gameOverText.setScale(1.5, 1.5);
+    
     Texture background;
     if (frame)
     {
@@ -132,16 +145,19 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
         //Pour display
         switch (menuindex) {
         case MainMenu:
+            window.draw(text);
             selectmenu_button.bdisplay(Color::Green, Color::Black, window, 20, "PLAY");
             option_button.bdisplay(Color::Blue, Color::Black, window, 20, "OPTION");
             exit_button.bdisplay(Color::Red, Color::Black, window, 20, "EXIT");
             break;
         case LevelMenu:
+            window.draw(text);
             CampagneButton.bdisplay(Color(252, 186, 3), Color::Black, window, 20, "Campagne");
             CustomLevelButton.bdisplay(Color(252, 186, 3), Color::Black, window, 20, "Custom");
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
             break;
         case CustomMenu:
+            window.draw(text);
             AddMelee.bdisplay(Color(6, 117, 43), Color::Black, window, 20, "+");
             RemoveMelee.bdisplay(Color(117, 6, 21), Color::Black, window, 20, "-");
             nbMelee.bdisplay(Color(222, 240, 250), Color::Black, window, 20, "");
@@ -153,10 +169,14 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             PlayCustom.bdisplay(Color::Green, Color::Black, window, 20, "PLAY");
             exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
             break;
+        case GameOver:
+            window.draw(gameOverText);
+            exit_button2.bdisplay(Color::Red, Color::Black, window, 20, "Return");
+            playAgain.bdisplay(Color::Green, Color::Black, window, 20, "Play Again");
         }
 
     }
-    window.draw(text);
+    
     // Pour les collisions
     if (active)
     {
@@ -178,6 +198,7 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
         case LevelMenu:
             if (CampagneButton.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
             {
+                menuindex = Campagne;
                 active = false;
             }
             if (CustomLevelButton.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
@@ -209,10 +230,19 @@ bool Main_menu::mdisplay(RenderWindow& window, Event event)
             }
             if (exit_button2.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
             {
-                menuindex = LevelMenu;
+                menuindex = MainMenu;
             }
             break;
-
+        case GameOver:
+            
+            if (exit_button2.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+            {
+                menuindex = MainMenu;
+            }
+            if (playAgain.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left))
+            {
+                active = false;
+            }
         }
     }
     if (!active)

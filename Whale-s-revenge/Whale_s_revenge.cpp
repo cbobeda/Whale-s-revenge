@@ -135,6 +135,10 @@ void main()
             }
         }
 
+        if (Keyboard::isKeyPressed(Keyboard::O)) {
+            menuindex = GameOver;
+        }
+
         if (Keyboard::isKeyPressed(Keyboard::N)) {
             if(NDelay.getElapsedTime().asSeconds() > 2){
                 boss.SpecialBossATK();
@@ -388,7 +392,12 @@ void main()
         if (!isDead) {
             if (player.Life <= 0) {
                 isDead = true;
+                if (menuindex == Campagne)
+                {
+                    menuindex = GameOver;
+                }
                 m.actmenu();
+                isDead = false;
                 sharks.DeleteAll();
                 player.MetalScrap = 0;
             }

@@ -6,7 +6,7 @@ using namespace sf;
 extern button selectmenu_button;
 extern Shark sharks;
 
-enum MenuIndex { MainMenu, LevelMenu, CustomMenu };
+enum MenuIndex { MainMenu, LevelMenu, CustomMenu, GameOver , Campagne};
 
 extern MenuIndex menuindex;
 

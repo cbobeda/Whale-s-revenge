@@ -30,7 +30,8 @@ void Player::InitializePlayer() {
 
 	Life = 5;
 	Speed = 10.f;
-	ProjectileSpeed = 0.3f;
+	ProjectileSpeed = 20.f;
+	ProjectileCD = 0.4;
 	PlayerDamage = 1;
 	MetalScrap = 0;
 }
@@ -53,10 +54,13 @@ void Player::DeleteBulles() {
 }
 
 void Player::CreateWave() {
+	texture.loadFromFile("assets/pearl.png");
 	wave.push_back(CircleShape());
-	wave.back().setRadius(500);
+	Sprite bulle;
+	bulle.setTexture(texture);
+	wave.back().setRadius(80);
 	wave.back().setFillColor(Color(175, 85, 197));
-	wave.back().setOrigin(500, 500);
+	wave.back().setOrigin(80, 80);
 	wave.back().setPosition(PlayerSprite.getPosition());
 	timers2.push_back(Clock());
 }
@@ -71,5 +75,14 @@ void Player::TakeDamage() {
 	if (InvicibleFrame.getElapsedTime().asSeconds() > 1) {
 		Life -= 1;
 		InvicibleFrame.restart();
+	}
+}
+
+void Player::ChangeShowValue() {
+	if (ShowPlayer) {
+		ShowPlayer = false;
+	}
+	else {
+		ShowPlayer = true;
 	}
 }

@@ -35,9 +35,17 @@ void SkillMenu::DisplaySkillMenu(RenderWindow& window) {
 			SecondaryIndex = 1;
 			player.MetalScrap -= 100;
 			SecondaryUnlocked = true;
+			player.CanSecondary = true;
 			SecondaryUnlock.setclicked();
-			player.Life += 1;
-			std::cerr << "Upgrade" << std::endl;
+		}
+	}
+
+	if (PrimaryMagic.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)) {
+		if (player.MetalScrap >= 100 && !PrimaryUpgraded) {
+			PrimaryUpgraded = true;
+			player.MetalScrap -= 100;
+			player.ProjectileSpeed = 35.f;
+			PrimaryMagic.setclicked();
 		}
 	}
 }

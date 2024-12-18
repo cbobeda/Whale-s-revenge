@@ -138,6 +138,7 @@ void Boat::BoatATK() {
 
 void Boat::BiggerATK(size_t index) {
     if (index < boatATK.size() && BiggerATKCD.getElapsedTime().asSeconds() > 0.5) {
+        pollution.isPolluting = true;
         ATKRadius += 5;
         boatATK[index].setRadius(ATKRadius);
         boatATK[index].setOrigin(ATKRadius, ATKRadius);

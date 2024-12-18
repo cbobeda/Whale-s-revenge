@@ -21,12 +21,17 @@ public:
 	sf::Sprite PlayerSprite;
 
 	sf::Clock InvicibleFrame;
+	sf::Clock InvicibleFramShow;
 
 	int Life;
 	float Speed;
 	float ProjectileSpeed;
+	float ProjectileCD;
 	int PlayerDamage;
 	int MetalScrap;
+
+	bool CanSecondary = false;
+	bool ShowPlayer = true;
 
 	void InitializePlayer();
 	void CreateBulles();
@@ -35,4 +40,5 @@ public:
 	void DeleteWave();
 	void TakeDamage();
 	void SetDifficulty(int DifficultyIndex);
+	void ChangeShowValue();
 };

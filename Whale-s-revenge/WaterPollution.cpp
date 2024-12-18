@@ -16,16 +16,20 @@ void Pollution::DecreaseMinimum(int Decrease) {
 }
 
 void Pollution::IncreasePollution(int DifficultyIndex) {
-	pollustate += 1 + DifficultyIndex;
+	if (CanChange) {
+		pollustate += 1 + DifficultyIndex;
 
-	if (pollustate >= 100) {
-		MaximumReach();
-	}
+		if (pollustate >= 100) {
+			MaximumReach();
+		}
+	}	
 }
 
 void Pollution::DecreasePollution() {
-	if (pollustate > minimumPollu) {
-		pollustate -= 1;
+	if (CanChange) {
+		if (pollustate > minimumPollu) {
+			pollustate -= 1;
+		}
 	}	
 }
 

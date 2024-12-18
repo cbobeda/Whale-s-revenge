@@ -15,6 +15,8 @@ public:
 	int pollustate = 0;
 
 	bool isPolluting = false;
+	bool CanChange = false;
+
 	void IncreasePollution(int DifficultyIndex);
 	void DecreasePollution();
 	void IncreaseMinimum(int Increase);

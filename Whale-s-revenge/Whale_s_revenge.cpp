@@ -12,6 +12,7 @@
 #include "bonus.h"
 #include "fish.h"
 #include "button.h"
+#include "WaterPollution.h"
 
 using namespace sf;
 using namespace std;
@@ -27,6 +28,8 @@ Boss boss;
 MenuIndex menuindex;
 SkillMenu sMenu;
 
+Pollution pollution;
+
 extern button selectmenu_button;
 
 bool createShark = false;
@@ -40,8 +43,6 @@ button PlayWave(1780, 950, 100, 100, false);
 
 //A supprimé plus tard
 Clock NDelay;
-bool BossCreated = false;
-bool ShieldCreated = false;
 //
 Texture backgroundTexture;
 Texture waveTexture;
@@ -64,6 +65,7 @@ public:
 void main()
 {
     string MetalScrapString = to_string(player.MetalScrap);
+    string PollutionEauString = to_string(pollution.pollustate);
     backgroundTexture.loadFromFile("assets/sky.png");
     backgroundTexture.setRepeated(true);
     waveTexture.loadFromFile("assets/vagues.png");
@@ -101,6 +103,9 @@ void main()
 
     Text ArgentTemp(MetalScrapString, font, 50);
     ArgentTemp.setPosition(50, 50);
+
+    Text PollutionEau(PollutionEauString, font, 50);
+    PollutionEau.setPosition(1500, 50);
 
     while (window.isOpen())
     {
@@ -196,6 +201,17 @@ void main()
                     boss.SecondayBossTakeDamage(o);
                     i--;
                     break;
+                }
+            }
+            for (size_t p = 0; p < boatvect.size(); p++) {
+                if (player.bulles[i].getGlobalBounds().intersects(boatvect[p].boatshape.getGlobalBounds())) {
+                    player.DeleteBulles();
+                    if (boatvect[p].BoatLife <= 0) {
+                        boat.DestroyBoat(p);
+                    }
+                    else {
+                        boatvect[p].BoatTakeDamage(player.PlayerDamage);
+                    }                   
                 }
             }
         }
@@ -362,8 +378,19 @@ void main()
             for (auto& shield : boss.Shields) {
                 window.draw(shield);
             }
+            if (pollution.PollutionClock.getElapsedTime().asSeconds() > 0.5) {
+                if (!pollution.isPolluting) {
+                    pollution.DecreasePollution();
+                    pollution.PollutionClock.restart();
+                }
+                else {
+                    pollution.IncreasePollution(m.DifficultyIndex);
+                    pollution.PollutionClock.restart();
+                }                
+            }
             window.draw(player.PlayerSprite);
             window.draw(ArgentTemp);
+            window.draw(PollutionEau);
             for (int i = 0; i < player.Life; i++)
             {
                 heartSprite.setPosition(100 * i, 100);
@@ -371,11 +398,11 @@ void main()
             }
             for (int i = 0; i < player.bulles.size(); i++) {
                 window.draw(player.bulles[i]);
-                player.bulles[i].move(20 * cos(player.angles[i]), 15 * sin(player.angles[i]));
+                player.bulles[i].move(20 * cos(player.angles[i]), 20 * sin(player.angles[i]));
             }
             for (int i = 0; i < player.wave.size(); i++) {
                 window.draw(player.wave[i]);
-                player.wave[i].move(20 * cos(player.angles[i]), 15 * sin(player.angles[i]));
+                player.wave[i].move(20 * cos(player.angles[i]), 20 * sin(player.angles[i]));
             }
 
             if (createShark) {
@@ -448,6 +475,9 @@ void main()
         string MetalScrapString = to_string(player.MetalScrap);
         ArgentTemp.setString(MetalScrapString);
 
+        string PollutionEauString = to_string(pollution.pollustate);
+        PollutionEau.setString(PollutionEauString);
+
         if (WaveIndex >= 0) {
             if (Keyboard::isKeyPressed(Keyboard::U)) {
                 if (SkillMDelay.getElapsedTime().asSeconds() > 2) {
@@ -486,6 +516,8 @@ void main()
         else {
             boss.SpecialBossBackward(window);
         }
+
+        cerr << pollution.pollustate << endl;
 
         if (!isDead) {
             if (player.Life <= 0) {

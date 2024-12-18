@@ -4,13 +4,17 @@
 
 class Pollution {
 private:
-	int pollustate = 0;
 	int minimumPollu = 0;
 
 	int surplus;
 
 public:
 
+	sf::Clock PollutionClock;
+
+	int pollustate = 0;
+
+	bool isPolluting = false;
 	void IncreasePollution(int DifficultyIndex);
 	void DecreasePollution();
 	void IncreaseMinimum(int Increase);

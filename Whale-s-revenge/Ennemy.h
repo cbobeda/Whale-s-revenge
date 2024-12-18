@@ -3,9 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "bullet.h"
+#include "WaterPollution.h"
 
 using namespace sf;
 extern Player player;
+extern Pollution pollution;
 
 class Shark {
 public:
@@ -74,6 +76,7 @@ public:
     void CreateBoats(int BoatNumber);
     void MoveBoat();
     void BoatATK();
+    void DestroyBoat(size_t boatindex);
     void BiggerATK(size_t index);
     void BoatTakeDamage(int PlayerDamage);
     void BoatATKTakeDamage(int PlayerDamage);

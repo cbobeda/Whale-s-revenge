@@ -2,6 +2,9 @@
 
 void Pollution::IncreaseMinimum(int Increase) {
 	minimumPollu += Increase;
+	if (pollustate < minimumPollu) {
+		pollustate = minimumPollu;
+	}
 }
 
 void Pollution::DecreaseMinimum(int Decrease) {

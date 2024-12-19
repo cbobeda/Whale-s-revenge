@@ -42,9 +42,6 @@ int WaveIndex = 1;
 int LevelIndex = 1;
 button PlayWave(1780, 950, 100, 100, false);
 
-//A supprimé plus tard
-Clock NDelay;
-//
 Texture backgroundTexture;
 Texture waveTexture;
 Texture requinTexture;
@@ -68,6 +65,7 @@ public:
 
 void main()
 {
+    
     string MetalScrapString = to_string(player.MetalScrap);
     string PollutionEauString = to_string(pollution.pollustate);
     backgroundTexture.loadFromFile("assets/sky.png");
@@ -104,9 +102,12 @@ void main()
     Clock clock;
     Clock CDCompetence;
     Main_menu m(600, 600);
-
     Font font;
     font.loadFromFile("font/MinecraftStandard.otf");
+
+    RectangleShape BlackBackground(Vector2f(2000, 2000));
+    BlackBackground.setFillColor(Color::Black);
+    BlackBackground.setPosition(0, 0);
 
     Text ArgentTemp(MetalScrapString, font, 50);
     ArgentTemp.setPosition(100, 100);
@@ -118,7 +119,6 @@ void main()
     {
         Event event;
         
-
         if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
             player.PlayerSprite.move(player.Speed, 0);
         }
@@ -134,15 +134,6 @@ void main()
 
         if (Keyboard::isKeyPressed(Keyboard::O)) {
             menuindex = GameOver;
-        }
-
-        if (Keyboard::isKeyPressed(Keyboard::N)) {
-            if (NDelay.getElapsedTime().asSeconds() > 2) {
-                boss.SpecialBossATK();
-                NDelay.restart();
-                boss.isSpecialATK = true;
-            }
-
         }
 
         if (Keyboard::isKeyPressed(Keyboard::W)) {
@@ -361,20 +352,20 @@ void main()
                             switch (WaveIndex) {
                             case 1:
                                 endwave.play();
-                                sharks.CreateShark(3, 4, 5, 4);
+                                sharks.CreateShark(3, 4, 1, 1);
                                 boat.CreateBoats(1);
                                 break;
                             case 2:
                                 endwave.play();
-                                sharks.CreateShark(4, 6, 5, 4);
+                                sharks.CreateShark(4, 6, 2, 2);
                                 break;
                             case 3:
                                 endwave.play();
-                                sharks.CreateShark(6, 8, 5, 4);
+                                sharks.CreateShark(6, 8, 3, 2);
                                 break;
                             case 4:
                                 endwave.play();
-                                sharks.CreateShark(8, 10, 5, 4);
+                                sharks.CreateShark(8, 10, 4, 3);
                                 boat.CreateBoats(1);
                                 break;
                             case 5:
@@ -567,6 +558,7 @@ void main()
         }
 
         if (sMenu.isUpgrading) {
+            window.draw(BlackBackground);
             sMenu.DisplaySkillMenu(window);
         }
 

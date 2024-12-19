@@ -12,10 +12,10 @@ extern std::vector<Shark> sharksvect;
 void Shark::SetDifficulty(int DifficultyIndex) {
     switch (DifficultyIndex) {
     case 1:
-        ProjectileSpeed = 15;
+        ProjectileSpeed = 10;
         break;
     case 2:
-        ProjectileSpeed = 20;
+        ProjectileSpeed = 25;
         break;
     case 3:
         ProjectileSpeed = 80;

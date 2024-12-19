@@ -34,6 +34,10 @@ void Player::InitializePlayer() {
 	ProjectileCD = 0.4;
 	PlayerDamage = 1;
 	MetalScrap = 0;
+
+	SecondaryProjectileCD = 4;
+	SecondaryProjectileSize = 80;
+	SecondaryProjectileSpeed = 20.f;
 }
 
 void Player::CreateBulles() {
@@ -54,15 +58,13 @@ void Player::DeleteBulles() {
 }
 
 void Player::CreateWave() {
-	texture.loadFromFile("assets/pearl.png");
-	wave.push_back(CircleShape());
-	Sprite bulle;
-	bulle.setTexture(texture);
-	wave.back().setRadius(80);
-	wave.back().setFillColor(Color(175, 85, 197));
-	wave.back().setOrigin(80, 80);
-	wave.back().setPosition(PlayerSprite.getPosition());
-	timers2.push_back(Clock());
+		wave.push_back(CircleShape());
+		wave.back().setRadius(SecondaryProjectileSize);
+		wave.back().setFillColor(Color(175, 85, 197));
+		wave.back().setOrigin(SecondaryProjectileSize, SecondaryProjectileSize);
+		wave.back().setPosition(PlayerSprite.getPosition());
+		timers2.push_back(Clock());
+	
 }
 
 void Player::DeleteWave() {
@@ -85,4 +87,14 @@ void Player::ChangeShowValue() {
 	else {
 		ShowPlayer = true;
 	}
+}
+
+void Player::Explode(){
+	Explosion.push_back(CircleShape());
+	Explosion.back().setRadius(300);
+	Explosion.back().setFillColor(Color(167, 30, 30));
+	Explosion.back().setOrigin(300,300);
+	Explosion.back().setPosition(wave.back().getPosition());
+	timers3.push_back(Clock());
+	DeleteWave();
 }

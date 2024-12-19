@@ -87,7 +87,7 @@ void main()
     whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge");
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
     window.setFramerateLimit(60);
 
     Clock clock;
@@ -152,7 +152,7 @@ void main()
             clock.restart();
         }
 
-        if (Mouse::isButtonPressed(Mouse::Right) && CDCompetence.getElapsedTime().asSeconds() > 4 && player.CanSecondary) {
+        if (Mouse::isButtonPressed(Mouse::Right) && CDCompetence.getElapsedTime().asSeconds() > player.SecondaryProjectileCD && player.CanSecondary) {
             if (player.MetalScrap >= 50) {
                 player.MetalScrap -= 50;
                 player.CreateWave();
@@ -219,13 +219,19 @@ void main()
             }
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.wave[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
-                    sharks.takeDamage(j, player.PlayerDamage);
-                    if (sharks.takeDamage(j, player.PlayerDamage)) {
-                        player.MetalScrap += 10;
+                    if (!player.SecondaryTechno) {
+                        sharks.takeDamage(j, player.PlayerDamage);
+                        if (sharks.takeDamage(j, player.PlayerDamage)) {
+                            player.MetalScrap += 10;
+                        }
+                        i--;
+                        break;
                     }
-                    i--;
-                    break;
+                    else {
+                        player.Explode();
+                    }
                 }
+                    
             }
         }
 
@@ -250,6 +256,13 @@ void main()
         if (boss.RequinBossShape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
             player.TakeDamage();
         }
+
+        /*for (size_t i = 0; i < player.Explosion.size(); i++) {
+            for (size_t j = 0; j < sharksvect.size(); ++j) {
+                if (player.Explosion[i].getGlobalBounds().intersects(shar) {
+                }
+            }
+        }*/
 
         for (size_t i = 0; i < boss.Shields.size(); i++) {
             if (boss.Shields[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
@@ -390,7 +403,6 @@ void main()
                         sMenu.switchUpgrading();
                         SkillMDelay.restart();
                     }
-
                 }
             }
 
@@ -433,7 +445,10 @@ void main()
             }
             for (int i = 0; i < player.wave.size(); i++) {
                 window.draw(player.wave[i]);
-                player.wave[i].move(player.ProjectileSpeed * cos(player.angles[i]), player.ProjectileSpeed * sin(player.angles[i]));
+                player.wave[i].move(player.SecondaryProjectileSpeed * cos(player.angles[i]), player.SecondaryProjectileSpeed* sin(player.angles[i]));
+            }
+            for (int i = 0; i < player.Explosion.size(); i++) {
+                window.draw(player.Explosion[i]);
             }
 
             if (createShark) {

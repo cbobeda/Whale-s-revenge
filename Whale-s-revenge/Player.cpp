@@ -4,6 +4,8 @@ extern SkillMenu sMenu;
 
 using namespace sf;
 
+SoundBuffer bufshoot;
+Sound shoot;
 Texture texture;
 void Player::SetDifficulty(int DifficultyIndex) {
 	switch (DifficultyIndex) {
@@ -28,6 +30,9 @@ void Player::InitializePlayer() {
 	PlayerSprite.setOrigin(60, 25);
 	PlayerSprite.setScale(2.5, 2.5);
 
+	bufshoot.loadFromFile("assets/shoot.wav");
+	shoot.setBuffer(bufshoot);
+
 	Life = 5;
 	Speed = 10.f;
 	ProjectileSpeed = 0.3f;
@@ -43,6 +48,7 @@ void Player::CreateBulles() {
 	bulles.back().setOrigin(10, 10);
 	bulles.back().setColor(Color(212,243,248,255));
 	bulles.back().setPosition(PlayerSprite.getPosition());
+	shoot.play();
 	timers1.push_back(Clock());
 }
 

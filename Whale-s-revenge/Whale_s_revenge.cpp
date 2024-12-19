@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <math.h>
 #include <cmath>
@@ -53,6 +54,9 @@ float frameDurationanime = 0.1f; // Durée d'une frame (en secondes)
 size_t currentFrameanime = 0;
 bonus b(2000,500,10,10);
 fish fish;
+
+Music music;
+SoundBuffer endofwave;
 class Projectile {
 public:
     float directionX, directionY;
@@ -85,6 +89,13 @@ void main()
     whaleSprite.setTextureRect(whaleRect);
     srand(static_cast<unsigned int>(time(nullptr)));
     player.InitializePlayer();
+    endofwave.loadFromFile("assets/endOfWave.wav");
+    Sound endwave;
+    endwave.setBuffer(endofwave);
+    if (!music.openFromFile("assets/maintheme.ogg"))
+        cout << "ne peut pas chargé la musique"; // erreur
+    music.play();
+    music.setLoop(true);
     RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge", Style::Fullscreen);
     window.setFramerateLimit(60);
 
@@ -105,7 +116,7 @@ void main()
     while (window.isOpen())
     {
         Event event;
-
+        
 
         if (Keyboard::isKeyPressed(Keyboard::D) && player.PlayerSprite.getPosition().x - player.Speed < 1800) {
             player.PlayerSprite.move(player.Speed, 0);
@@ -315,20 +326,25 @@ void main()
                         case 1:
                             switch (WaveIndex) {
                             case 1:
+                                endwave.play();
                                 sharks.CreateShark(3, 4, 5, 4);
                                 boat.CreateBoats(1);
                                 break;
                             case 2:
+                                endwave.play();
                                 sharks.CreateShark(4, 6, 5, 4);
                                 break;
                             case 3:
+                                endwave.play();
                                 sharks.CreateShark(6, 8, 5, 4);
                                 break;
                             case 4:
+                                endwave.play();
                                 sharks.CreateShark(8, 10, 5, 4);
                                 boat.CreateBoats(1);
                                 break;
                             case 5:
+                                endwave.play();
                                 boss.CreateSharkBoss();
                                 boss.BossCreated = true;
                                 LevelIndex++;
@@ -340,15 +356,19 @@ void main()
                         case 2:
                             switch (WaveIndex) {
                             case 1:
+                                endwave.play();
                                 sharks.CreateShark(10, 10, 7, 6);
                                 break;
                             case 2:
+                                endwave.play();
                                 sharks.CreateShark(30, 0, 8, 6);
                                 break;
                             case 3:
+                                endwave.play();
                                 sharks.CreateShark(0, 20, 7, 5);
                                 break;
                             case 4:
+                                endwave.play();
                                 sharks.CreateShark(15, 15, 7, 6);
                                 break;
                             }

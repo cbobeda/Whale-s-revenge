@@ -105,3 +105,8 @@ void Player::Explode(){
 	timers3.push_back(Clock());
 	DeleteWave();
 }
+
+void Player::DeleteExplosion() {
+	Explosion.erase(Explosion.begin());
+	timers3.erase(timers3.begin());
+}

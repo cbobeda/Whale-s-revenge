@@ -56,16 +56,14 @@ void Shark::moveAll(Vector2f playerpos) {
     }
 }
 
-bool Shark::takeDamage(size_t sharkIndex, int damage) {
+void Shark::takeDamage(size_t sharkIndex, int damage) {
     if (sharkIndex < sharksvect.size()) {
         sharksvect[sharkIndex].life -= damage;
 
         if (sharksvect[sharkIndex].life <= 0) {
             sharksvect.erase(sharksvect.begin() + sharkIndex);
-            return true;
         }
     }
-    return false;
 }
 
 void Shark::SharkATK(Vector2f playerpos) {

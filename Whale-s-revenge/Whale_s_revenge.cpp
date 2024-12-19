@@ -89,7 +89,7 @@ void main()
     skySprite2.setPosition(backgroundTexture.getSize().x, 0);
     waveSprite2.setPosition(waveTexture.getSize().x, 0);
     whaleSprite.setTextureRect(whaleRect);
-    srand(static_cast<unsigned int>(time(nullptr)));
+    srand(time(NULL));
     player.InitializePlayer();
     endofwave.loadFromFile("assets/endOfWave.wav");
     Sound endwave;
@@ -98,7 +98,7 @@ void main()
         cout << "ne peut pas chargé la musique"; // erreur
     music.play();
     music.setLoop(true);
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge", Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
     window.setFramerateLimit(60);
 
     Clock clock;
@@ -109,7 +109,7 @@ void main()
     font.loadFromFile("font/MinecraftStandard.otf");
 
     Text ArgentTemp(MetalScrapString, font, 50);
-    ArgentTemp.setPosition(50, 50);
+    ArgentTemp.setPosition(100, 100);
 
     Text PollutionEau(PollutionEauString, font, 50);
     PollutionEau.setPosition(1500, 50);
@@ -182,6 +182,11 @@ void main()
                 player.DeleteWave();
             }
         }
+        /*for (size_t i = 0; i < player.timers3.size(); i++) {
+            if (player.timers3[i].getElapsedTime().asSeconds() > 0.2) {
+                player.DeleteExplosion();
+            }
+        }*/
 
         for (size_t i = 0; i < player.bulles.size(); ++i) {
             if (player.bulles[i].getGlobalBounds().intersects(boss.RequinBossShape.getGlobalBounds())) {
@@ -191,10 +196,9 @@ void main()
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     player.DeleteBulles();
-                    sharksvect[j].takeDamage(j, player.PlayerDamage + player.BoostDamage);
-                    if (sharksvect[j].takeDamage(j, player.PlayerDamage)) {
-                        player.MetalScrap += 10;
-                    }
+                    sharksvect[j].takeDamage(j, player.PlayerDamage); 
+                        player.MetalScrap += 5;
+                    
                     i--;
                     break;
                 }
@@ -231,20 +235,26 @@ void main()
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.wave[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     if (!player.SecondaryTechno) {
-                        sharks.takeDamage(j, player.PlayerDamage);
-                        if (sharks.takeDamage(j, player.PlayerDamage)) {
-                            player.MetalScrap += 10;
-                        }
+                        sharks.takeDamage(j, player.PlayerDamage); 
+                            player.MetalScrap += 5;                       
                         i--;
                         break;
                     }
                     else {
-                        player.Explode();
+                        //player.Explode();
                     }
                 }
                     
             }
         }
+
+        /*for (size_t i = 0; i < player.Explosion.size(); i++) {
+            for (size_t j = 0; j < sharksvect.size(); ++j) {
+                if (player.Explosion[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
+
+                }
+            }
+        }*/
 
         for (size_t i = 0; i < sharks.ennemyATK.size(); i++) {
             if (sharks.ennemyATK[i]->shape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
@@ -267,13 +277,6 @@ void main()
         if (boss.RequinBossShape.getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
             player.TakeDamage();
         }
-
-        /*for (size_t i = 0; i < player.Explosion.size(); i++) {
-            for (size_t j = 0; j < sharksvect.size(); ++j) {
-                if (player.Explosion[i].getGlobalBounds().intersects(shar) {
-                }
-            }
-        }*/
 
         for (size_t i = 0; i < boss.Shields.size(); i++) {
             if (boss.Shields[i].getGlobalBounds().intersects(player.PlayerSprite.getGlobalBounds())) {
@@ -456,7 +459,7 @@ void main()
 
             for (int i = 0; i < player.Life; i++)
             {
-                heartSprite.setPosition(100 * i, 100);
+                heartSprite.setPosition(65 * i, 0);
                 window.draw(heartSprite);
             }
             for (int i = 0; i < player.bulles.size(); i++) {
@@ -494,7 +497,6 @@ void main()
                             boss.isSpecialATK = true;
                         }
                     }
-
                 }
                 for (auto& shield : boss.Shields) {
                     shield.move(-9, 0);
@@ -569,8 +571,10 @@ void main()
         }
 
         if (!isDead) {
-            if (player.Life <= 0) {
+            if (player.Life <= 0 || pollution.pollustate >= 100) {
                 isDead = true;
+                pollution.pollustate = 0;
+                pollution.CanChange = false;
                 if (menuindex == Campagne)
                 {
                     menuindex = GameOver;

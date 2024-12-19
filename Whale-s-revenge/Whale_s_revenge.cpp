@@ -98,7 +98,7 @@ void main()
         cout << "ne peut pas chargé la musique"; // erreur
     music.play();
     music.setLoop(true);
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::None);
     window.setFramerateLimit(60);
 
     Clock clock;

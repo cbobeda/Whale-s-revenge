@@ -163,9 +163,9 @@ void Boat::DestroyBoat(size_t boatindex) {
 void Boss::CreateSharkBoss() {
     life = 50;
     damage = 1;
-    RequinBossShape.setSize(Vector2f(350, 350));
+    Bossrequin_texture.loadFromFile("assets/Shark.png");
+    RequinBossShape.setScale(13,13);
     RequinBossShape.setPosition(1400, 700);
-    RequinBossShape.setFillColor(Color::Green);
 }
 
 void Boss::MoveBoss() {

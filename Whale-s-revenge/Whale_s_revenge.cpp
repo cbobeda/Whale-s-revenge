@@ -480,6 +480,7 @@ void main()
 
                 if (boss.BossCreated) {
                     boss.MoveBoss();
+                    boss.RequinBossShape.setTexture(boss.Bossrequin_texture);
                     int BossATK = (rand() % 11);
                     if (boss.SharkBossCD.getElapsedTime().asSeconds() > boss.ATKCD) {
                         boss.SharkBossCD.restart();

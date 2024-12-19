@@ -93,8 +93,8 @@ public:
     bool BossCreated = false;
 
     bool isSpecialATK = false;
-
-    sf::RectangleShape RequinBossShape;
+    sf::Texture Bossrequin_texture;
+    sf::Sprite RequinBossShape;
     std::vector<bullet*> SharkBossBulle;
     std::vector<sf::CircleShape> Shields;
 

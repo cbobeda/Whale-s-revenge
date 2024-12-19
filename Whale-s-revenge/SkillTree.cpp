@@ -35,9 +35,45 @@ void SkillMenu::DisplaySkillMenu(RenderWindow& window) {
 			SecondaryIndex = 1;
 			player.MetalScrap -= 100;
 			SecondaryUnlocked = true;
+			player.CanSecondary = true;
 			SecondaryUnlock.setclicked();
-			player.Life += 1;
-			std::cerr << "Upgrade" << std::endl;
+		}
+	}
+
+	if (PrimaryMagic.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)) {
+		if (player.MetalScrap >= 100 && !PrimaryUpgraded && SecondaryUnlocked) {
+			PrimaryUpgraded = true;
+			player.MetalScrap -= 100;
+			player.ProjectileSpeed = 35.f;
+			player.PlayerDamage = 2;
+			PrimaryMagic.setclicked();
+		}
+	}
+	if (SecondaryMagic.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)) {
+		if (player.MetalScrap >= 100 && !SecondaryUpgraded && PrimaryUpgraded) {
+			SecondaryUpgraded = true;
+			player.MetalScrap -= 100;
+			player.SecondaryProjectileCD = 2;
+			player.SecondaryProjectileSize = 170;
+			SecondaryMagic.setclicked();
+		}
+	}
+	if (PrimaryTechno.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)) {
+		if (player.MetalScrap >= 100 && !PrimaryUpgraded && SecondaryUnlocked) {
+			PrimaryUpgraded = true;
+			player.MetalScrap -= 100;
+			player.ProjectileSpeed = 60.f;
+			player.ProjectileCD *= 2;
+			player.PlayerDamage = 5;
+			PrimaryTechno.setclicked();
+		}
+	}
+	if (SecondaryTechno.check(Mouse::getPosition().x, Mouse::getPosition().y, window) && Mouse::isButtonPressed(Mouse::Left)) {
+		if (player.MetalScrap >= 100 && !SecondaryUpgraded && PrimaryUpgraded) {
+			SecondaryUpgraded = true;
+			player.MetalScrap -= 100;
+			player.SecondaryProjectileSize = 35.f;
+			SecondaryTechno.setclicked();
 		}
 	}
 }

@@ -113,6 +113,10 @@ void Boat::CreateBoats(int BoatNumber) {
 void Boat::MoveBoat() {
     for (auto& boat : boatvect) {
         boat.boatshape.move(Speed, 0);
+        if (boat.boatshape.getPosition().x <= -100) {
+            boat.DestroyBoat(0);
+            pollution.IncreaseMinimum(10);
+        }
     }
 }
 
@@ -134,6 +138,7 @@ void Boat::BoatATK() {
 
 void Boat::BiggerATK(size_t index) {
     if (index < boatATK.size() && BiggerATKCD.getElapsedTime().asSeconds() > 0.5) {
+        pollution.isPolluting = true;
         ATKRadius += 5;
         boatATK[index].setRadius(ATKRadius);
         boatATK[index].setOrigin(ATKRadius, ATKRadius);
@@ -149,10 +154,14 @@ void Boat::BoatATKTakeDamage(int PlayerDamage) {
     BoatATKLife -= PlayerDamage;
 }
 
+void Boat::DestroyBoat(size_t boatindex) {
+    boatvect.erase(boatvect.begin() + boatindex);
+}
+
 #pragma endregion ClassBateau
 
 void Boss::CreateSharkBoss() {
-    life = 40;
+    life = 50;
     damage = 1;
     RequinBossShape.setSize(Vector2f(350, 350));
     RequinBossShape.setPosition(1400, 700);
@@ -236,7 +245,7 @@ void Boss::SpecialBossATK() {
 
 void Boss::BossTakeDamage(int playerDamage,int DifficultyIndex) {
     life -= playerDamage;
-    if (life <= 15) {
+    if (life <= 25) {
         switch (DifficultyIndex) {
         case 1:
             ATKCD = 3;

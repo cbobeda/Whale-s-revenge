@@ -98,7 +98,7 @@ void main()
         cout << "ne peut pas chargé la musique"; // erreur
     music.play();
     music.setLoop(true);
-    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge",Style::Fullscreen);
+    RenderWindow window(VideoMode::getDesktopMode(), "Whale-s-revenge");
     window.setFramerateLimit(60);
 
     Clock clock;
@@ -113,6 +113,11 @@ void main()
 
     Text PollutionEau(PollutionEauString, font, 50);
     PollutionEau.setPosition(1500, 50);
+
+    RectangleShape BlackBackground(Vector2f(2000, 2000));
+    BlackBackground.setFillColor(Color::Black);
+    BlackBackground.setPosition(0, 0);
+
 
     while (window.isOpen())
     {
@@ -335,17 +340,8 @@ void main()
             b.checkCollision(player);
             window.draw(skySprite);
             window.draw(skySprite2);
-            for (auto& boats : boatvect) {
-                window.draw(boats.boatshape);
-            }
             window.draw(waveSprite);
             window.draw(waveSprite2);
-            for (auto& shark : sharksvect)
-            {
-                shark.shape.setTexture(requinTexture);
-                shark.rect.setPosition(shark.shape.getPosition().x, shark.shape.getPosition().y);
-                window.draw(shark.shape);
-            }
             window.draw(b.rect);
             window.draw(fish.sprite);
             window.draw(boss.RequinBossShape);
@@ -361,16 +357,16 @@ void main()
                             switch (WaveIndex) {
                             case 1:
                                 endwave.play();
-                                sharks.CreateShark(3, 4, 5, 4);
+                                sharks.CreateShark(3, 4, 2, 2);
                                 boat.CreateBoats(1);
                                 break;
                             case 2:
                                 endwave.play();
-                                sharks.CreateShark(4, 6, 5, 4);
+                                sharks.CreateShark(4, 6, 3, 2);
                                 break;
                             case 3:
                                 endwave.play();
-                                sharks.CreateShark(6, 8, 5, 4);
+                                sharks.CreateShark(6, 8, 4, 3);
                                 break;
                             case 4:
                                 endwave.play();
@@ -413,11 +409,6 @@ void main()
                             break;
                     }
                 }                    
-            }
-
-
-            for (auto& shield : boss.Shields) {
-                window.draw(shield);
             }
 
             if (!createShark) {
@@ -498,9 +489,7 @@ void main()
                         }
                     }
                 }
-                for (auto& shield : boss.Shields) {
-                    shield.move(-9, 0);
-            }
+                
                 if (boss.isSpecialATK) {
                     boss.SpecialBossATKMove();
                 }
@@ -523,27 +512,45 @@ void main()
                 }
                 if (boatvect.size() > 0) {
                     boat.BoatATK();
-                }
-
-                for (int i = 0; i < boat.boatATK.size(); i++) {
-                    window.draw(boat.boatATK[i]);
-                    if (boat.boatATK[i].getPosition().y <= 1000) {
-                        boat.boatATK[i].move(0, 5);
-                    }
-                    else if (boat.boatATK[i].getPosition().y >= 1000) {
-                        boat.BiggerATK(i);
-                    }
-                    for (auto& bulle : player.bulles)
-                    {
-                        if (boat.boatATK[i].getGlobalBounds().intersects(bulle.getGlobalBounds()))
-                        {
-                            pollution.isPolluting = false;
-                            boat.boatATK.erase(boat.boatATK.begin() + i);
-                        }
-                    }
-                }
+                }              
         }
 
+        for (auto& shark : sharksvect)
+        {
+            shark.shape.setTexture(requinTexture);
+            shark.rect.setPosition(shark.shape.getPosition().x, shark.shape.getPosition().y);
+            window.draw(shark.shape);
+        }
+
+        for (auto& boats : boatvect) {
+            window.draw(boats.boatshape);
+        }
+
+        for (int i = 0; i < boat.boatATK.size(); i++) {
+            window.draw(boat.boatATK[i]);
+            if (boat.boatATK[i].getPosition().y <= 1000) {
+                boat.boatATK[i].move(0, 5);
+            }
+            else if (boat.boatATK[i].getPosition().y >= 1000) {
+                boat.BiggerATK(i);
+            }
+            for (auto& bulle : player.bulles)
+            {
+                if (boat.boatATK[i].getGlobalBounds().intersects(bulle.getGlobalBounds()))
+                {
+                    pollution.isPolluting = false;
+                    boat.boatATK.erase(boat.boatATK.begin() + i);
+                }
+            }
+        }
+
+        for (auto& shield : boss.Shields) {
+            shield.move(-9, 0);
+        }
+
+        for (auto& shield : boss.Shields) {
+            window.draw(shield);
+        }
         string MetalScrapString = to_string(player.MetalScrap);
         ArgentTemp.setString(MetalScrapString);
 
@@ -567,6 +574,7 @@ void main()
         }
 
         if (sMenu.isUpgrading) {
+            window.draw(BlackBackground);
             sMenu.DisplaySkillMenu(window);
         }
 
@@ -574,6 +582,8 @@ void main()
             if (player.Life <= 0 || pollution.pollustate >= 100) {
                 isDead = true;
                 pollution.pollustate = 0;
+                WaveIndex = 1;
+                LevelIndex = 1;
                 pollution.CanChange = false;
                 if (menuindex == Campagne)
                 {
@@ -582,6 +592,7 @@ void main()
                 m.actmenu();
                 isDead = false;
                 sharks.DeleteAll();
+                boatvect.erase(boatvect.begin());
                 player.MetalScrap = 0;
             }
         }

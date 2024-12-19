@@ -191,7 +191,7 @@ void main()
             for (size_t j = 0; j < sharksvect.size(); ++j) {
                 if (player.bulles[i].getGlobalBounds().intersects(sharksvect[j].rect.getGlobalBounds())) {
                     player.DeleteBulles();
-                    sharksvect[j].takeDamage(j, player.PlayerDamage);
+                    sharksvect[j].takeDamage(j, player.PlayerDamage + player.BoostDamage);
                     if (sharksvect[j].takeDamage(j, player.PlayerDamage)) {
                         player.MetalScrap += 10;
                     }

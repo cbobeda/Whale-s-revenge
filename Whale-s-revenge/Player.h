@@ -39,6 +39,7 @@ public:
 	float SecondaryProjectileSize;
 
 	int PlayerDamage;
+	int BoostDamage;
 	int MetalScrap;
 
 	bool CanSecondary = false;

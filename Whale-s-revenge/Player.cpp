@@ -55,6 +55,7 @@ void Player::CreateBulles() {
 	bulles.back().setPosition(PlayerSprite.getPosition());
 	shoot.play();
 	timers1.push_back(Clock());
+	BoostDamage = 0; 
 }
 
 void Player::DeleteBulles() {

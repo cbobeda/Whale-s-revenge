@@ -170,6 +170,7 @@
     <ClCompile Include="Main menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SkillTree.cpp" />
+    <ClCompile Include="WaterPollution.cpp" />
     <ClCompile Include="Whale_s_revenge.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="Main menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SkillTree.h" />
+    <ClInclude Include="WaterPollution.h" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Whale-s-revenge.vcxproj.filters" />

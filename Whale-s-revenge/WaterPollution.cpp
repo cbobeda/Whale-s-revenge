@@ -21,6 +21,7 @@ void Pollution::IncreasePollution(int DifficultyIndex) {
 
 		if (pollustate >= 100) {
 			MaximumReach();
+			CanChange = false;
 		}
 	}	
 }
@@ -34,5 +35,5 @@ void Pollution::DecreasePollution() {
 }
 
 void Pollution::MaximumReach() {
-	//GameOver
+	
 }

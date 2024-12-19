@@ -54,4 +54,5 @@ public:
 	void SetDifficulty(int DifficultyIndex);
 	void ChangeShowValue();
 	void Explode();
+	void DeleteExplosion();
 };

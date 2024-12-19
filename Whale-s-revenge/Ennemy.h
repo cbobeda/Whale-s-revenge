@@ -35,7 +35,7 @@ public:
 
     void moveAll(sf::Vector2f playerpos);
 
-    bool takeDamage(size_t sharkIndex, int damage);
+    void takeDamage(size_t sharkIndex, int damage);
 
     void SharkATK(sf::Vector2f playerpos);
 
